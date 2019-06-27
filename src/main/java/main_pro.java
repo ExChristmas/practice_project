@@ -12,6 +12,7 @@ public class main_pro {
         List<String> rows = new ArrayList<>();
         Map<Integer, String> map = new HashMap();
         String[] strs = reader.readNext();
+        //жопа
 //        for (String s : strs) {
 //            for (int i = 0; i < s.length(); i++)
 //                if ()
