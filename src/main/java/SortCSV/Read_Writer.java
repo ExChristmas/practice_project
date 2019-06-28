@@ -7,11 +7,21 @@
 //import java.io.FileWriter;
 //import java.io.FileNotFoundException;
 //import java.io.IOException;
+//
 //import au.com.bytecode.opencsv.CSVReader;
+//
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//public class Read_Writer {
+//interface Read_WriterCSV {
+//
+//    public List<String> Read();
+//
+//    public void Write();
+//
+//}
+//
+//public class Default_Read_Writer implements Read_WriterCSV {
 //
 //    public String fileName;
 //    public char separator;
@@ -19,9 +29,9 @@
 //
 //    private File file = new File(fileName);
 //
-////    Read_Writer() {}
+////    Default_Read_Writer() {}
 //
-//    public List<String> readFirst() {
+//    public List<String> Read() {
 //        try {
 //            List<String> component = new ArrayList<>();
 //            FileReader reader = new FileReader(file);
@@ -31,6 +41,7 @@
 //            e.printStackTrace();
 //        }
 //    }
+//
 //    public String readRow() {
 //        try {
 //            FileReader reader = new FileReader(file);
@@ -41,7 +52,7 @@
 ////        return row;
 //    }
 //
-//    public void writeRow() {
+//    public void Write() {
 //        try {
 //            FileWriter writer = new FileWriter(file);
 //        } catch (IOException e) {

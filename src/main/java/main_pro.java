@@ -4,29 +4,28 @@ import java.util.*;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 
+import SortCSV.Row;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class main_pro {
-    @SuppressWarnings("resource")
+
     public static void main(String[] args) throws Exception {
-        CsvToBean csv = new CsvToBean();
         CSVReader reader = new CSVReader(new FileReader("newfile.csv"), ',', '"', 0);
-        List<String> rows = new ArrayList<>();
-        Map<Integer, String> map = new HashMap();
-        String[] strs = reader.readNext();
-//        for (String s : strs) {
-//            for (int i = 0; i < s.length(); i++)
-//                if ()
-//            System.out.println(s);
-//        }
-//        String[] nextLine;
+        String[] firstLine = reader.readNext();
+        String[] nextLine = reader.readNext();
 //        while ((nextLine = reader.readNext()) != null) {
 //            if (nextLine != null) {
-//                //Verifying the read data here
-////                System.out.println(Arrays.toString(nextLine));
-//                rows.add(Arrays.toString(nextLine));
+//                System.out.println(Arrays.toString(nextLine));
 //            }
 //        }
-//        for (Object obj : rows) {
-//            System.out.println(obj);
-//        }
+
+        Row a1 = new Row(firstLine, nextLine);
+        System.out.println(a1.getValues());
+        System.out.println(a1.getValues().get(" id"));
     }
 }
