@@ -1,28 +1,45 @@
 package SortCSV;
 
-import java.util.Map;
+import sun.misc.Contended;
+
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 public class Row {
 
-    private Map<String, String> values;
+    private HashMap<String, String> values;
 
     public Row() {
-        values = new HashMap<>();
+        values = new HashMap<String, String>();
+    }
+
+    public Row(HashMap<String, String> values) {
+        this.values = values;
     }
 
     public Row(String[] cols, String[] vals) {
-        values = new HashMap<>();
-
-        for (int i = 0; i < cols.length; i++)
-            values.put(cols[i], vals[i]);
+        int len_cols = cols.length;
+        try {
+            for (int i = 0; i < len_cols; i++)
+                values.put(cols[i], vals[i]);
+        } catch (NullPointerException e) {
+            System.out.println("Error, NullPointerException!");
+        }
+        catch (Exception e) {
+            System.out.println("Error");
+        }
     }
 
-    public Map<String, String> getValues() {
+    public HashMap<String, String> getValues() {
         return values;
     }
 
-    public void setValues(Map<String, String> values) {
-        this.values = values;
+    public String getValue(String val) throws
+            NoSuchElementException {
+        if (values.containsKey(val)) {
+            return values.get(val);
+        } else {
+            throw new NoSuchElementException("");
+        }
     }
 }
