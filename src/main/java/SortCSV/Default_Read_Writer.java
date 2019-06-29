@@ -57,7 +57,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
     }
 
     public String[] Read() {
-        String[] components = new String[10];
+        String[] components = new String[];
         try {
             FileReader reader = new FileReader(new File(fileName));
             CSVReader readerCSV = new CSVReader(reader, separator, quotechar);
