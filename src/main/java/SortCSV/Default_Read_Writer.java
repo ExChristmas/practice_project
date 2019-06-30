@@ -26,11 +26,13 @@ public class Default_Read_Writer implements Read_WriterCSV {
     private String fileName;
     private char separator;
     private char quotechar;
+    private int number_line;
 
-    public Default_Read_Writer(String fileName, char separator, char quotechar) {
+    public Default_Read_Writer(String fileName, char separator, char quotechar, int number_line) {
         this.fileName = fileName;
         this.separator = separator;
         this.quotechar = quotechar;
+        this.number_line = number_line;
     }
 
     public String getFileName() {
@@ -60,7 +62,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         ArrayList<String> components = new ArrayList<>();
         try {
             FileReader reader = new FileReader(new File(fileName));
-            CSVReader readerCSV = new CSVReader(reader, separator, quotechar);
+            CSVReader readerCSV = new CSVReader(reader, separator, quotechar, number_line);
             String[] components_temp = readerCSV.readNext();
             for (String s : components_temp) {
                 components.add(s);
@@ -70,6 +72,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         } catch (Exception e) {
             System.out.println("Error");
         } finally {
+            number_line++;
             return components;
         }
     }
