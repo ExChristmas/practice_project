@@ -15,7 +15,7 @@ import java.util.List;
 
 interface Read_WriterCSV {
 
-    public String[] Read();
+    public ArrayList<String> Read();
 
     public void Write();
 
@@ -56,16 +56,17 @@ public class Default_Read_Writer implements Read_WriterCSV {
         this.quotechar = quotechar;
     }
 
-    public String[] Read() {
-        String[] components = new String[];
+    public ArrayList<String> Read() {
+        ArrayList<String> components = new ArrayList<>();
         try {
             FileReader reader = new FileReader(new File(fileName));
             CSVReader readerCSV = new CSVReader(reader, separator, quotechar);
-            components = readerCSV.readNext();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            String[] components_temp = readerCSV.readNext();
+            for (String s : components_temp) {
+                components.add(s);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+                e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error");
         } finally {

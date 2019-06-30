@@ -23,13 +23,7 @@ public class main_pro {
         System.out.println(r.getValue("A"));
 
         Default_Read_Writer read_writer = new Default_Read_Writer("newfile.csv", ',', '"');
-        int it = 0;
-        while (it < 2) {
-            String[] row = read_writer.Read();
-            for (int i = 0; i < row.length; i++)
-                System.out.print(row[i] + " ");
-            System.out.print("\n");
-            it++;
-        }
+        System.out.println(read_writer.Read());
+        System.out.println(read_writer.Read());
     }
 }
