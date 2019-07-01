@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.List;
 
 interface Read_WriterCSV {
 
-    public ArrayList<String> Read();
+    ArrayList<String> Read();
 
-    public void Write();
+    void Write(ArrayList<String> row);
 
 }
 
@@ -27,12 +28,17 @@ public class Default_Read_Writer implements Read_WriterCSV {
     private char separator;
     private char quotechar;
     private int number_line;
+    private char escapehar;
+    private String lineEnd;
 
-    public Default_Read_Writer(String fileName, char separator, char quotechar, int number_line) {
+//    public Default_Read_Writer(String)
+    public Default_Read_Writer(String fileName, char separator, char quotechar, int number_line, char escapechar, String lineEnd) {
         this.fileName = fileName;
         this.separator = separator;
         this.quotechar = quotechar;
         this.number_line = number_line;
+        this.escapehar = escapechar;
+        this.lineEnd = lineEnd;
     }
 
     public String getFileName() {
@@ -62,8 +68,8 @@ public class Default_Read_Writer implements Read_WriterCSV {
         ArrayList<String> components = new ArrayList<>();
         try {
             FileReader reader = new FileReader(new File(fileName));
-            CSVReader readerCSV = new CSVReader(reader, separator, quotechar, number_line);
-            String[] components_temp = readerCSV.readNext();
+            CSVReader csvReader = new CSVReader(reader, separator, quotechar, number_line);
+            String[] components_temp = csvReader.readNext();
             for (String s : components_temp) {
                 components.add(s);
             }
@@ -77,9 +83,10 @@ public class Default_Read_Writer implements Read_WriterCSV {
         }
     }
 
-    public void Write() {
+    public void Write(ArrayList<String> row) {
         try {
             FileWriter writer = new FileWriter(fileName);
+//            CSVWriter csvWriter = new CSVWriter(writer, separator, quotechar, '')
         } catch (IOException e) {
             e.printStackTrace();
         }
