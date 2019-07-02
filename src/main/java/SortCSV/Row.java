@@ -1,6 +1,7 @@
 package SortCSV;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -9,17 +10,17 @@ public class Row {
     private Map<String, String> values;
 
     public Row() {
-        values = new HashMap<>();
+        createMap();
     }
 
     public Row(HashMap<String, String> values) {
-        this.values = new HashMap<>();
+        createMap();
         for (Map.Entry<String, String> entry : values.entrySet())
             this.values.put(entry.getKey(), entry.getValue());
     }
 
     public Row(String[] cols, String[] vals) {
-        this.values = new HashMap<>();
+        createMap();
         int len_cols = cols.length;
         try {
             for (int i = 0; i < len_cols; i++)
@@ -32,7 +33,9 @@ public class Row {
         }
     }
 
-
+    private void createMap() {
+        this.values = new LinkedHashMap<>();
+    }
 
     public Map<String, String> getValues() {
         return values;

@@ -7,15 +7,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 interface Read_WriterCSV {
 
-    ArrayList<String> read();
+    List<String> read();
 
-    void write(ArrayList<String> row);
+    void write(List<String> row);
 
 }
 
@@ -79,8 +80,8 @@ public class Default_Read_Writer implements Read_WriterCSV {
         this.lineEnd = lineEnd;
     }
 
-    public ArrayList<String> read() {
-        ArrayList<String> components = new ArrayList<>();
+    public List<String> read() {
+        List<String> components = new ArrayList<>();
         String[] components_temp;
         try {
             FileReader reader = new FileReader(new File(fileName));
@@ -99,7 +100,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         }
     }
 
-    public void write(ArrayList<String> row) {
+    public void write(List<String> row) {
         try {
             FileWriter writer = new FileWriter(fileName, true);
             CSVWriter csvWriter = new CSVWriter(writer, separator, quotechar, escapehar, lineEnd);
