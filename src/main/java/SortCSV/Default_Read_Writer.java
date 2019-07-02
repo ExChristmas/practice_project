@@ -32,7 +32,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
     private char escapehar;
     private String lineEnd;
 
-//    public Default_Read_Writer(String)
+    //    public Default_Read_Writer(String)
     public Default_Read_Writer(String fileName, char separator, char quotechar,
                                int number_line, char escapechar, String lineEnd) {
         this.fileName = fileName;
@@ -85,15 +85,17 @@ public class Default_Read_Writer implements Read_WriterCSV {
 
     public ArrayList<String> Read() {
         ArrayList<String> components = new ArrayList<>();
+        String[] components_temp;
         try {
             FileReader reader = new FileReader(new File(fileName));
             CSVReader csvReader = new CSVReader(reader, separator, quotechar, number_line);
-            String[] components_temp = csvReader.readNext();
-            for (String s : components_temp) {
-                components.add(s);
-            }
+            if ((components_temp = csvReader.readNext()) == null)
+                return components;
+            else
+                for (String s : components_temp)
+                    components.add(s);
         } catch (IOException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error");
         } finally {
