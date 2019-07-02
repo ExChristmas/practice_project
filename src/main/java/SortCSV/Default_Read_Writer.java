@@ -1,25 +1,21 @@
 package SortCSV;
 
 import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import au.com.bytecode.opencsv.CSVWriter;
-import com.sun.istack.internal.NotNull;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 interface Read_WriterCSV {
 
-    ArrayList<String> Read();
+    ArrayList<String> read();
 
-    void Write(ArrayList<String> row);
+    void write(ArrayList<String> row);
 
 }
 
@@ -83,7 +79,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         this.lineEnd = lineEnd;
     }
 
-    public ArrayList<String> Read() {
+    public ArrayList<String> read() {
         ArrayList<String> components = new ArrayList<>();
         String[] components_temp;
         try {
@@ -92,8 +88,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
             if ((components_temp = csvReader.readNext()) == null)
                 return components;
             else
-                for (String s : components_temp)
-                    components.add(s);
+                components.addAll(Arrays.asList(components_temp));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -104,7 +99,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         }
     }
 
-    public void Write(ArrayList<String> row) {
+    public void write(ArrayList<String> row) {
         try {
             FileWriter writer = new FileWriter(fileName, true);
             CSVWriter csvWriter = new CSVWriter(writer, separator, quotechar, escapehar, lineEnd);

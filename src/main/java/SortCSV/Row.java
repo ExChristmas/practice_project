@@ -1,21 +1,25 @@
 package SortCSV;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class Row {
 
-    private HashMap<String, String> values;
+    private Map<String, String> values;
 
     public Row() {
-        values = new HashMap<String, String>();
+        values = new HashMap<>();
     }
 
     public Row(HashMap<String, String> values) {
-        this.values = values;
+        this.values = new HashMap<>();
+        for (Map.Entry<String, String> entry : values.entrySet())
+            this.values.put(entry.getKey(), entry.getValue());
     }
 
     public Row(String[] cols, String[] vals) {
+        this.values = new HashMap<>();
         int len_cols = cols.length;
         try {
             for (int i = 0; i < len_cols; i++)
@@ -28,7 +32,9 @@ public class Row {
         }
     }
 
-    public HashMap<String, String> getValues() {
+
+
+    public Map<String, String> getValues() {
         return values;
     }
 
