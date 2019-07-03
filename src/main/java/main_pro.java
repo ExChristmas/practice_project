@@ -41,6 +41,8 @@ public class main_pro {
         }
         it_first_row = first_row.iterator();
         String col = it_first_row.next();
+        col = it_first_row.next();
+        col = it_first_row.next();
         System.out.println(col);
         Comparator<Row> comparator = new RowComparator(col);
         Iterator<Row> it_rows = rows.iterator();
