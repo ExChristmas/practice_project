@@ -94,10 +94,9 @@ public class Default_Read_Writer implements Read_WriterCSV {
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error");
-        } finally {
-            number_line++;
-            return components;
         }
+        number_line++;
+        return components;
     }
 
     public void write(List<String> row) {
