@@ -39,6 +39,18 @@ public class main_pro {
             read_writer.write(row_write);
             row_write.clear();
         }
+        it_first_row = first_row.iterator();
+        String col = it_first_row.next();
+        System.out.println(col);
+        Comparator<Row> comparator = new RowComparator(col);
+        Iterator<Row> it_rows = rows.iterator();
+        Row[] columns_list = new Row[rows.size()];
+        for (int i = 0; i < rows.size(); i++)
+        columns_list[i] = it_rows.next();
+        System.out.println(comparator.compare(columns_list[0], columns_list[0]));
+        System.out.println(comparator.compare(columns_list[0], columns_list[1]));
+        System.out.println(comparator.compare(columns_list[0], columns_list[2]));
+        System.out.println(comparator.compare(columns_list[0], columns_list[3]));
     }
 
 }

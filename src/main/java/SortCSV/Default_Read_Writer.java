@@ -80,6 +80,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         this.lineEnd = lineEnd;
     }
 
+    @Override
     public List<String> read() {
         List<String> components = new ArrayList<>();
         String[] components_temp;
@@ -99,6 +100,7 @@ public class Default_Read_Writer implements Read_WriterCSV {
         return components;
     }
 
+    @Override
     public void write(List<String> row) {
         try {
             FileWriter writer = new FileWriter(fileName, true);
