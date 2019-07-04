@@ -14,7 +14,12 @@ public class Row {
         initializeMap();
     }
 
+    public Row (Row other) {
+        this(other.getValues());
+    }
+
     public Row(Map<String, String> values) {
+        System.out.println("Конструктор");
         initializeMap();
         for (Map.Entry<String, String> entry : values.entrySet())
             this.values.put(entry.getKey(), entry.getValue());
@@ -47,8 +52,12 @@ public class Row {
         if (values.containsKey(val)) {
             return values.get(val);
         } else {
-            throw new NoSuchElementException("");
+            throw new NoSuchElementException();
         }
+    }
+
+    public void setValue(String column, String value) {
+        values.put(column, value);
     }
 
 //    @Override

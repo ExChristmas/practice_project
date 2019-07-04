@@ -53,6 +53,15 @@ public class main_pro {
         System.out.println(comparator.compare(columns_list[0], columns_list[1]));
         System.out.println(comparator.compare(columns_list[0], columns_list[2]));
         System.out.println(comparator.compare(columns_list[0], columns_list[3]));
+        Row row1 = new Row();
+        Row row2 = new Row();
+        row1 = new Row(columns_list[0]);
+        row2 = new Row(columns_list[1]);
+        System.out.println(row1.getValues());
+        System.out.println(row2.getValues());
+        columns_list[0].setValue("Id", "10");
+        columns_list[1].setValue("Id", "11");
+        System.out.println(row1.getValues());
+        System.out.println(row2.getValues());
     }
-
 }
