@@ -4,7 +4,7 @@ import java.util.*;
 
 interface SortCSV {
 
-    void sort(String fileNameSort, char separator, char quotechar,
+    void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
               int number_line, char escapechar, String lineEnd);
 
 }
@@ -13,12 +13,10 @@ public class NaturalMergeSort implements SortCSV {
 
     private String workFileName1;
     private String workFileName2;
-    private Comparator<Row> comparator;
 
     public NaturalMergeSort(String workFile1, String workFile2) {
         this.workFileName1 = workFile1;
         this.workFileName2 = workFile2;
-
     }
 
     public String getWorkFile1() {
@@ -57,20 +55,27 @@ public class NaturalMergeSort implements SortCSV {
     }
 
     //deal whith comparation and reading
-    public void sort(String fileNameSort, char separator, char quotechar,
+    public void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
         s1 = s2 = 1;
         ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar, number_line, escapechar, lineEnd);
         ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar, number_line, escapechar, lineEnd);
         ReadWriterCSV f2 = createReadWriter(workFileName2, separator, quotechar, number_line, escapechar, lineEnd);
+        Comparator<Row> comparator = new DefaultRowComparator(sortColumn);
+        List<String> lst_check = new ArrayList<>(); //for checking at the end of the file
         List<String> first_row = f.read();
         Row row1, row2;
         while (s1 > 0 & s2 > 0) {
             mark = 1;
             s1 = 0;
             s2 = 0;
-            row1 = toRow(first_row, f.read()); //stopped here
+            row1 = toRow(first_row, f.read());
+            lst_check = f.read();
+            if (lst_check.size() == 0)
+                f1.write(row1.getRowValues());
+//                row2 = toRow(first_row, lst_check);
+
         }
     }
 }
