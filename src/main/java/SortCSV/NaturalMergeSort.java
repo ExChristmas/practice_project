@@ -37,13 +37,12 @@ public class NaturalMergeSort implements SortCSV {
         this.workFileName2 = workFile2;
     }
 
-    private Row toRow(List<String> cols, String[] vals) { //added
+    private Row toRow(List<String> cols, List<String> vals) { //added
         Map<String, String> row = new LinkedHashMap<>();
-        int i = 0;
-        for (String col : cols) {
-            row.put(col, vals[i]);
-            i++;
-        }
+        Iterator<String> it_cols = cols.iterator();
+        Iterator<String> it_vals = vals.iterator();
+        while(it_cols.hasNext())
+            row.put(it_cols.next(), it_vals.next());
         return new Row(row);
     }
 
@@ -71,7 +70,7 @@ public class NaturalMergeSort implements SortCSV {
             mark = 1;
             s1 = 0;
             s2 = 0;
-            f.read(); //stopped here
+            row1 = toRow(first_row, f.read()); //stopped here
         }
     }
 }
