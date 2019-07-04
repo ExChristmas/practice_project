@@ -72,9 +72,16 @@ public class NaturalMergeSort implements SortCSV {
             s2 = 0;
             row1 = toRow(first_row, f.read());
             lst_check = f.read();
-            if (lst_check.size() == 0)
-                f1.write(row1.getRowValues());
-//                row2 = toRow(first_row, lst_check);
+            if (lst_check.size() == 0) {
+                f1.write(row1.getRowValues()); //problem?
+            }
+            lst_check = f.read();
+            if(lst_check.size() == 0)
+                row2 = toRow(first_row, lst_check);
+            while (true) { // file division
+                if (lst_check.size() == 0) break;
+                //
+            }
 
         }
     }
