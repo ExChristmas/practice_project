@@ -5,7 +5,7 @@ import SortCSV.*;
 public class main_pro {
 
     public static void main(String[] args) throws Exception {
-        Default_Read_Writer read_writer = new Default_Read_Writer("newfile.csv",
+        DefaultReadWriter read_writer = new DefaultReadWriter("newfile.csv",
                 ',', '"', 0, '|', "\n");
         List<Row> rows = new ArrayList<>();
         List<String> first_row = read_writer.read();
@@ -44,7 +44,7 @@ public class main_pro {
         col = it_first_row.next();
         col = it_first_row.next();
         System.out.println(col);
-        Comparator<Row> comparator = new RowComparator(col);
+        Comparator<Row> comparator = new DefaultRowComparator(col);
         Iterator<Row> it_rows = rows.iterator();
         Row[] columns_list = new Row[rows.size()];
         for (int i = 0; i < rows.size(); i++)

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-interface Read_WriterCSV {
+interface ReadWriterCSV {
 
     List<String> read();
 
@@ -20,7 +20,7 @@ interface Read_WriterCSV {
 
 }
 
-public class Default_Read_Writer implements Read_WriterCSV {
+public class DefaultReadWriter implements ReadWriterCSV {
 
     private String fileName;
     private char separator;
@@ -30,8 +30,8 @@ public class Default_Read_Writer implements Read_WriterCSV {
     private String lineEnd;
 
     //    public Default_Read_Writer(String)
-    public Default_Read_Writer(String fileName, char separator, char quotechar,
-                               int number_line, char escapechar, String lineEnd) {
+    public DefaultReadWriter(String fileName, char separator, char quotechar,
+                             int number_line, char escapechar, String lineEnd) {
         this.fileName = fileName;
         this.separator = separator;
         this.quotechar = quotechar;

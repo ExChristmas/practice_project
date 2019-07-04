@@ -2,11 +2,11 @@ package SortCSV;
 
 import java.util.Comparator;
 
-public class RowComparator implements Comparator<Row> {
+public class DefaultRowComparator implements Comparator<Row> {
 
     private String column;
 
-    public RowComparator(String column) {
+    public DefaultRowComparator(String column) {
         this.column = column;
     }
 
