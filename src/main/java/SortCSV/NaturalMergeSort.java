@@ -1,6 +1,6 @@
 package SortCSV;
 
-import java.util.Comparator;
+import java.util.*;
 
 interface SortCSV {
 
@@ -37,11 +37,27 @@ public class NaturalMergeSort implements SortCSV {
         this.workFileName2 = workFile2;
     }
 
+    private Row toRow(List<String> cols, String[] vals) { //added
+        Map<String, String> row = new LinkedHashMap<>();
+        int i = 0;
+        for (String col : cols) {
+            row.put(col, vals[i]);
+            i++;
+        }
+        return new Row(row);
+    }
+
+    private List<String> toList(String[] row) { //added (need?)
+        int len_row = row.length;
+        return new ArrayList<>(Arrays.asList(row).subList(0, len_row));
+    }
+
     private ReadWriterCSV createReadWriter(String nameFile, char separator, char quotechar,
                                       int number_line, char escapechar, String lineEnd) {
         return new DefaultReadWriter(nameFile, separator, quotechar, number_line, escapechar, lineEnd);
     }
 
+    //deal whith comparation and reading
     public void sort(String fileNameSort, char separator, char quotechar,
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
@@ -49,13 +65,13 @@ public class NaturalMergeSort implements SortCSV {
         ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar, number_line, escapechar, lineEnd);
         ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar, number_line, escapechar, lineEnd);
         ReadWriterCSV f2 = createReadWriter(workFileName2, separator, quotechar, number_line, escapechar, lineEnd);
-        Row row1 = new Row();
-        Row row2 = new Row();
+        List<String> first_row = f.read();
+        Row row1, row2;
         while (s1 > 0 & s2 > 0) {
             mark = 1;
             s1 = 0;
             s2 = 0;
-            f.read();
+            f.read(); //stopped here
         }
     }
 }
