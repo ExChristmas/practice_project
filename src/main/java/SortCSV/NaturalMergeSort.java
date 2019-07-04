@@ -54,7 +54,7 @@ public class NaturalMergeSort implements SortCSV {
         return new DefaultReadWriter(nameFile, separator, quotechar, number_line, escapechar, lineEnd);
     }
 
-    //deal whith comparation and reading
+    //deal whith comparation and reading!!!
     public void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
