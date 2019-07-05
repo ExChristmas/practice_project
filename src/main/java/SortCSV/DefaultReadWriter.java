@@ -11,6 +11,8 @@ import java.util.Iterator;
 
 interface ReadWriterCSV {
 
+    boolean hasNextLine();
+
     List<String> read();
 
     void write(List<String> row);
@@ -77,14 +79,14 @@ public class DefaultReadWriter implements ReadWriterCSV {
         this.lineEnd = lineEnd;
     }
 
-    public boolean endFile() {
+    @Override
+    public boolean hasNextLine() {
         try {
             FileReader reader = new FileReader(new File(fileName));
             CSVReader csvReader = new CSVReader(reader, separator, quotechar, number_line);
             String[] nextLine;
-            if ((nextLine = csvReader.readNext()) == null)
+            if ((nextLine = csvReader.readNext()) != null)
                 return true;
-
         } catch (IOException e ) {
             e.printStackTrace();
         }

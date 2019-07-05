@@ -64,6 +64,7 @@ public class NaturalMergeSort implements SortCSV {
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
         s1 = s2 = 1;
+        ArrayList<String> endBlock = new ArrayList<>(); endBlock.add("'");
         ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
                 number_line, escapechar, lineEnd); // reader for main file
         ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar,
@@ -71,25 +72,51 @@ public class NaturalMergeSort implements SortCSV {
         ReadWriterCSV f2 = createReadWriter(workFileName2, separator, quotechar,
                 number_line, escapechar, lineEnd); // reader for second file
         Comparator<Row> comparator = new DefaultRowComparator(sortColumn); // comparator for compare rows
-        List<String> lst_check = new ArrayList<>(); //for checking at the end of the file
         List<String> first_row = f.read(); // read name columuns
-        Row row1, row2; // objects Row for compare
+        Row row1 = new Row();// objects Row for compare
+        Row row2 = new Row();
         while (s1 > 0 & s2 > 0) { //
             mark = 1; //
             s1 = 0; //
             s2 = 0;
-            row1 = toRow(first_row, f.read()); // packaging first row values into main file
-            lst_check = f.read();
-            if (lst_check.size() != 0) // file end check
+            row1 = toRow(first_row, f.read()); // packaging first row values
+            if (f.hasNextLine()) // file end check
                 f1.write(row1.getRowValues()); // write first row in first file
-            lst_check = f.read(); // reaging next row
-            if(lst_check.size() != 0) // file end check
-                row2 = toRow(first_row, lst_check); // packaging row
-            while (lst_check.size() != 0) { // file division
-                 if (comparator.compare(row1, row2) < 0) {
-
-                 }
+            if(f.hasNextLine()) // file end check
+                row2 = toRow(first_row, f.read()); // packaging second row values
+            while (f.hasNextLine()) { // file division
+                if (comparator.compare(row1, row2) > 0) {
+                    switch (mark) {
+                        case 1: {
+                            f1.write(endBlock);
+                            mark = 2;
+                            s1++;
+                            break;
+                        }
+                        case 2: {
+                            f2.write(endBlock);
+                            mark = 1;
+                            s2++;
+                            break;
+                        }
+                    }
+                }
+                if (mark == 1) {
+                    f1.write(row2.getRowValues());
+                } else {
+                    f2.write(row2.getRowValues());
+                    f2.
+                }
+                row1 = new Row(row2);
+                row2 = toRow(first_row, f.read());
             }
+            if (s2 > 0 & mark == 2) {
+                f2.write(endBlock);
+            }
+            if(s1 > 0 & mark == 1) {
+                f1.write(endBlock);
+            }
+            //
         }
     }
 }

@@ -19,7 +19,6 @@ public class Row {
     }
 
     public Row(Map<String, String> values) {
-        System.out.println("Конструктор");
         initializeMap();
         for (Map.Entry<String, String> entry : values.entrySet())
             this.values.put(entry.getKey(), entry.getValue());
