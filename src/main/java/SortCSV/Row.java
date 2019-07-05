@@ -47,8 +47,8 @@ public class Row {
         return values;
     }
 
-    public ArrayList getRowValues() {
-        return (ArrayList)this.values.values();
+    public ArrayList<String> getRowValues() {
+        return (ArrayList<String>)this.values.values();
     }
 
     public String getValue(String val) throws

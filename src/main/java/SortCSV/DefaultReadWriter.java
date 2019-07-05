@@ -3,10 +3,7 @@ package SortCSV;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +75,20 @@ public class DefaultReadWriter implements ReadWriterCSV {
 
     public void setLineEnd(String lineEnd) {
         this.lineEnd = lineEnd;
+    }
+
+    public boolean endFile() {
+        try {
+            FileReader reader = new FileReader(new File(fileName));
+            CSVReader csvReader = new CSVReader(reader, separator, quotechar, number_line);
+            String[] nextLine;
+            if ((nextLine = csvReader.readNext()) == null)
+                return true;
+
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
