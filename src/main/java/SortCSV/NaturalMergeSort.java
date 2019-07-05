@@ -105,7 +105,6 @@ public class NaturalMergeSort implements SortCSV {
                     f1.write(row2.getRowValues());
                 } else {
                     f2.write(row2.getRowValues());
-                    f2.
                 }
                 row1 = new Row(row2);
                 row2 = toRow(first_row, f.read());
