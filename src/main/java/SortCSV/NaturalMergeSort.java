@@ -115,7 +115,19 @@ public class NaturalMergeSort implements SortCSV {
             if(s1 > 0 & mark == 1) {
                 f1.write(endBlock);
             }
-            //
+        }
+        if (f1.hasNextLine()) {
+            row1 = toRow(first_row, f1.read());
+        }
+        if (f2.hasNextLine()) {
+            row2 = toRow(first_row, f2.read());
+        }
+        boolean file1, file2;
+        while (f1.hasNextLine() & f2.hasNextLine()) {
+            file1 = file2 = false;
+            while (!file1 & !file2) {
+                if ()//?!)))
+            }
         }
     }
 }
