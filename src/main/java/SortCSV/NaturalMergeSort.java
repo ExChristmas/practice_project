@@ -28,7 +28,7 @@ public class NaturalMergeSort implements SortCSV {
     }
 
     public void setWorkFile1(String workFile1) {
-        this.workFileName1 =  workFile1;
+        this.workFileName1 = workFile1;
     }
 
     public void setWorkFile2(String workFile2) {
@@ -39,7 +39,7 @@ public class NaturalMergeSort implements SortCSV {
         Map<String, String> row = new LinkedHashMap<>();
         Iterator<String> it_cols = cols.iterator();
         Iterator<String> it_vals = vals.iterator();
-        while(it_cols.hasNext())
+        while (it_cols.hasNext())
             row.put(it_cols.next(), it_vals.next());
         return new Row(row);
     }
@@ -50,7 +50,7 @@ public class NaturalMergeSort implements SortCSV {
     }
 
     private ReadWriterCSV createReadWriter(String nameFile, char separator, char quotechar,
-                                      int number_line, char escapechar, String lineEnd) {
+                                           int number_line, char escapechar, String lineEnd) {
         return new DefaultReadWriter(nameFile, separator, quotechar, number_line, escapechar, lineEnd);
     }
 
@@ -64,7 +64,8 @@ public class NaturalMergeSort implements SortCSV {
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
         s1 = s2 = 1;
-        ArrayList<String> endBlock = new ArrayList<>(); endBlock.add("'");
+        ArrayList<String> endBlock = new ArrayList<>();
+        endBlock.add("'");
         ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
                 number_line, escapechar, lineEnd); // reader for main file
         ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar,
@@ -82,7 +83,7 @@ public class NaturalMergeSort implements SortCSV {
             row1 = toRow(first_row, f.read()); // packaging first row values
             if (f.hasNextLine()) // file end check
                 f1.write(row1.getRowValues()); // write first row in first file
-            if(f.hasNextLine()) // file end check
+            if (f.hasNextLine()) // file end check
                 row2 = toRow(first_row, f.read()); // packaging second row values
             while (f.hasNextLine()) { // file division
                 if (comparator.compare(row1, row2) > 0) {
@@ -112,22 +113,53 @@ public class NaturalMergeSort implements SortCSV {
             if (s2 > 0 & mark == 2) {
                 f2.write(endBlock);
             }
-            if(s1 > 0 & mark == 1) {
+            if (s1 > 0 & mark == 1) {
                 f1.write(endBlock);
             }
-        }
-        if (f1.hasNextLine()) {
-            row1 = toRow(first_row, f1.read());
-        }
-        if (f2.hasNextLine()) {
-            row2 = toRow(first_row, f2.read());
-        }
-        boolean file1, file2;
-        while (f1.hasNextLine() & f2.hasNextLine()) {
+            if (f1.hasNextLine()) {
+                row1 = toRow(first_row, f1.read());
+            }
+            if (f2.hasNextLine()) {
+                row2 = toRow(first_row, f2.read());
+            }
+            boolean file1, file2;
+            while (f1.hasNextLine() & f2.hasNextLine()) {
+                file1 = file2 = false;
+                while (!file1 & !file2) {
+                    if (comparator.compare(row1, row2) < 0 & comparator.compare(row1, row2) == 0) {
+                        f.write(row1.getRowValues());
+                        file1 = endRange(f1);
+                        row1 = toRow(first_row, f1.read());
+                    } else {
+                        f.write(row2.getRowValues());
+                        file2 = endRange(f2);
+                        row2 = toRow(first_row, f2.read());
+                    }
+                }
+                while (!file1) {
+                    f.write(row1.getRowValues());
+                    file1 = endRange(f1);
+                    row1 = toRow(first_row, f1.read());
+                }
+                while (!file2) {
+                    f.write(row2.getRowValues());
+                    file2 = endRange(f2);
+                    row2 = toRow(first_row, f2.read());
+                }
+            }
             file1 = file2 = false;
-            while (!file1 & !file2) {
-                if ()//?!)))
+            while (!file1 & f1.hasNextLine()) {
+                f.write(row1.getRowValues());
+                file1 = endRange(f1);
+                row1 = toRow(first_row, f1.read());
+            }
+            while (!file2 & f2.hasNextLine()) {
+                f.write(row2.getRowValues());
+                file2 = endRange(f2);
+                row2 = toRow(first_row, f2.read());
             }
         }
+        //delete file1
+        //delete file2
     }
 }
