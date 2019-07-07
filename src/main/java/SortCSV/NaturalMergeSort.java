@@ -64,8 +64,8 @@ public class NaturalMergeSort implements SortCSV {
                      int number_line, char escapechar, String lineEnd) {
         int s1, s2, a1, a2, mark;
         s1 = s2 = 1;
-        ArrayList<String> endBlock = new ArrayList<>();
-        endBlock.add("'");
+        ArrayList<String> end_range = new ArrayList<>();
+        end_range.add("'");
         ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
                 number_line, escapechar, lineEnd); // reader for main file
         ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar,
@@ -89,13 +89,13 @@ public class NaturalMergeSort implements SortCSV {
                 if (comparator.compare(row1, row2) > 0) {
                     switch (mark) {
                         case 1: {
-                            f1.write(endBlock);
+                            f1.write(end_range);
                             mark = 2;
                             s1++;
                             break;
                         }
                         case 2: {
-                            f2.write(endBlock);
+                            f2.write(end_range);
                             mark = 1;
                             s2++;
                             break;
@@ -111,10 +111,10 @@ public class NaturalMergeSort implements SortCSV {
                 row2 = toRow(first_row, f.read());
             }
             if (s2 > 0 & mark == 2) {
-                f2.write(endBlock);
+                f2.write(end_range);
             }
             if (s1 > 0 & mark == 1) {
-                f1.write(endBlock);
+                f1.write(end_range);
             }
             if (f1.hasNextLine()) {
                 row1 = toRow(first_row, f1.read());
@@ -161,5 +161,11 @@ public class NaturalMergeSort implements SortCSV {
         }
         //delete file1
         //delete file2
+    }
+
+    private boolean endRange(ReadWriterCSV f) {
+        ArrayList<String> end_range = new ArrayList<>();
+        end_range.add("'");
+        return f.read() == end_range;
     }
 }
