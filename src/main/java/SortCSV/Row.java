@@ -1,10 +1,6 @@
 package SortCSV;
 
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Row {
 
@@ -46,8 +42,8 @@ public class Row {
         return values;
     }
 
-    public ArrayList<String> getRowValues() {
-        return (ArrayList<String>)this.values.values();
+    public Collection<String> getRowValues() {
+        return this.values.values();
     }
 
     public String getValue(String val) throws
