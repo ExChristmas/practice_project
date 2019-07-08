@@ -1,6 +1,9 @@
 package SortCSV;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
+import java.io.File;
 
 interface SortCSV {
 
@@ -35,7 +38,7 @@ public class NaturalMergeSort implements SortCSV {
         this.workFileName2 = workFile2;
     }
 
-    public Row toRow(List<String> cols, List<String> vals) { //added
+    private Row toRow(List<String> cols, List<String> vals) { //added
         Map<String, String> row = new LinkedHashMap<>();
         Iterator<String> it_cols = cols.iterator();
         Iterator<String> it_vals = vals.iterator();
@@ -59,113 +62,121 @@ public class NaturalMergeSort implements SortCSV {
         lst1.addAll(lst2);
     }
 
-    //deal whith comparation and reading!!!
     public void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
                      int number_line, char escapechar, String lineEnd) {
-        int s1, s2, a1, a2, mark;
-        s1 = s2 = 1;
-        ArrayList<String> end_range = new ArrayList<>();
-        end_range.add("'");
-        ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
-                number_line, escapechar, lineEnd); // reader for main file
-        ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar,
-                number_line, escapechar, lineEnd); // reader for first file
-        ReadWriterCSV f2 = createReadWriter(workFileName2, separator, quotechar,
-                number_line, escapechar, lineEnd); // reader for second file
-        Comparator<Row> comparator = new DefaultRowComparator(sortColumn); // comparator for compare rows
-        List<String> first_row = f.read(); // read name columuns
-        Row row1 = new Row();// objects Row for compare
-        Row row2 = new Row();
-        while (s1 > 0 & s2 > 0) { //
-            mark = 1; //
-            s1 = 0; //
-            s2 = 0;
-            row1 = toRow(first_row, f.read()); // packaging first row values
-            if (f.hasNextLine()) // file end check
-                f1.write(row1.getRowValues()); // write first row in first file
-            if (f.hasNextLine()) // file end check
-                row2 = toRow(first_row, f.read()); // packaging second row values
-            while (f.hasNextLine()) { // file division
-                if (comparator.compare(row1, row2) > 0) {
-                    switch (mark) {
-                        case 1: {
-                            f1.write(end_range);
-                            mark = 2;
-                            s1++;
-                            break;
-                        }
-                        case 2: {
-                            f2.write(end_range);
-                            mark = 1;
-                            s2++;
-                            break;
+        try {
+            int s1, s2, mark;
+            s1 = s2 = 1;
+            ArrayList<String> end_range = new ArrayList<>();
+            end_range.add("'");
+            ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
+                    number_line, escapechar, lineEnd); // reader for main file
+            ReadWriterCSV f1 = createReadWriter(workFileName1, separator, quotechar,
+                    number_line, escapechar, lineEnd); // reader for first file
+            ReadWriterCSV f2 = createReadWriter(workFileName2, separator, quotechar,
+                    number_line, escapechar, lineEnd); // reader for second file
+            Comparator<Row> comparator = new DefaultRowComparator(sortColumn); // comparator for compare rows
+            List<String> first_row = f.read(); // read name columuns
+            List<String> lst_read;
+            Row row1 = new Row();// objects Row for compare
+            Row row2 = new Row();
+            while (s1 > 0 & s2 > 0) { //
+                mark = 1; //
+                s1 = 0; //
+                s2 = 0;
+                row1 = toRow(first_row, f.read()); // packaging first row values
+                if (f.hasNextLine()) // file end check
+                    f1.write(row1.getRowValues()); // write first row in first file
+                if (f.hasNextLine()) // file end check
+                    row2 = toRow(first_row, f.read()); // packaging second row values
+                while (f.hasNextLine()) { // file division
+                    if (comparator.compare(row1, row2) > 0) {
+                        switch (mark) {
+                            case 1: {
+                                f1.write(end_range);
+                                mark = 2;
+                                s1++;
+                                break;
+                            }
+                            case 2: {
+                                f2.write(end_range);
+                                mark = 1;
+                                s2++;
+                                break;
+                            }
                         }
                     }
-                }
-                if (mark == 1) {
-                    f1.write(row2.getRowValues());
-                } else {
-                    f2.write(row2.getRowValues());
-                }
-                row1 = new Row(row2);
-                row2 = toRow(first_row, f.read());
-            }
-            if (s2 > 0 & mark == 2) {
-                f2.write(end_range);
-            }
-            if (s1 > 0 & mark == 1) {
-                f1.write(end_range);
-            }
-            if (f1.hasNextLine()) {
-                row1 = toRow(first_row, f1.read());
-            }
-            if (f2.hasNextLine()) {
-                row2 = toRow(first_row, f2.read());
-            }
-            boolean file1, file2;
-            while (f1.hasNextLine() & f2.hasNextLine()) {
-                file1 = file2 = false;
-                while (!file1 & !file2) {
-                    if (comparator.compare(row1, row2) < 0 & comparator.compare(row1, row2) == 0) {
-                        f.write(row1.getRowValues());
-                        file1 = endRange(f1);
-                        row1 = toRow(first_row, f1.read());
+                    if (mark == 1) {
+                        f1.write(row2.getRowValues());
                     } else {
-                        f.write(row2.getRowValues());
-                        file2 = endRange(f2);
-                        row2 = toRow(first_row, f2.read());
+                        f2.write(row2.getRowValues());
                     }
+                    row1 = new Row(row2);
+                    row2 = toRow(first_row, f.read());
                 }
-                while (!file1) {
-                    f.write(row1.getRowValues());
-                    file1 = endRange(f1);
+                if (s2 > 0 & mark == 2) {
+                    f2.write(end_range);
+                }
+                if (s1 > 0 & mark == 1) {
+                    f1.write(end_range);
+                }
+
+                //clearing main file
+                (new FileWriter(new File("newfileCopy.csv"))).write("");
+
+                if (f1.hasNextLine()) {
                     row1 = toRow(first_row, f1.read());
                 }
-                while (!file2) {
-                    f.write(row2.getRowValues());
-                    file2 = endRange(f2);
+                if (f2.hasNextLine()) {
                     row2 = toRow(first_row, f2.read());
                 }
+                boolean file1, file2;
+                while (f1.hasNextLine() & f2.hasNextLine()) {
+                    file1 = file2 = false;
+                    while (!file1 & !file2) {
+                        if (comparator.compare(row1, row2) < 0 & comparator.compare(row1, row2) == 0) {
+                            f.write(row1.getRowValues());
+                            if ((lst_read = f1.read()).equals(end_range))
+                                file1 = true;
+                            row1 = toRow(first_row, lst_read);
+                        } else {
+                            f.write(row2.getRowValues());
+                            if ((lst_read = f2.read()).equals(end_range))
+                                file2 = true;
+                            row2 = toRow(first_row, lst_read);
+                        }
+                    }
+                    while (!file1) {
+                        f.write(row1.getRowValues());
+                        if ((lst_read = f1.read()).equals(end_range))
+                            file1 = true;
+                        row1 = toRow(first_row, lst_read);
+                    }
+                    while (!file2) {
+                        f.write(row2.getRowValues());
+                        if ((lst_read = f2.read()).equals(end_range))
+                            file2 = true;
+                        row2 = toRow(first_row, lst_read);
+                    }
+                }
+                file1 = file2 = false;
+                while (!file1 & f1.hasNextLine()) {
+                    f.write(row1.getRowValues());
+                    if ((lst_read = f1.read()).equals(end_range))
+                        file1 = true;
+                    row1 = toRow(first_row, lst_read);
+                }
+                while (!file2 & f2.hasNextLine()) {
+                    f.write(row2.getRowValues());
+                    if ((lst_read = f1.read()).equals(end_range))
+                        file2 = true;
+                    row2 = toRow(first_row, lst_read);
+                }
             }
-            file1 = file2 = false;
-            while (!file1 & f1.hasNextLine()) {
-                f.write(row1.getRowValues());
-                file1 = endRange(f1);
-                row1 = toRow(first_row, f1.read());
-            }
-            while (!file2 & f2.hasNextLine()) {
-                f.write(row2.getRowValues());
-                file2 = endRange(f2);
-                row2 = toRow(first_row, f2.read());
-            }
+            (new File(workFileName1)).delete();
+            (new File(workFileName2)).delete();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //delete file1
-        //delete file2
-    }
-
-    private boolean endRange(ReadWriterCSV f) {
-        ArrayList<String> end_range = new ArrayList<>();
-        end_range.add("'");
-        return f.read() == end_range;
     }
 }

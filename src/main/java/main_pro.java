@@ -1,6 +1,8 @@
+import java.io.FileWriter;
 import java.util.*;
 
 import SortCSV.*;
+import java.io.File;
 
 public class main_pro {
 
@@ -51,8 +53,8 @@ public class main_pro {
         System.out.println(comparator.compare(columns_list[0], columns_list[1]));
         System.out.println(comparator.compare(columns_list[0], columns_list[2]));
         System.out.println(comparator.compare(columns_list[0], columns_list[3]));
-        Row row1 = new Row();
-        Row row2 = new Row();
+        Row row1;
+        Row row2;
         row1 = new Row(columns_list[0]);
         row2 = new Row(columns_list[1]);
         System.out.println(row1.getValues());
@@ -86,5 +88,6 @@ public class main_pro {
 //        b = read_writer.read();
 //        System.out.println(a);
 //        System.out.println(b);
+        (new FileWriter(new File("newfileCopy.csv"))).write("");
     }
 }

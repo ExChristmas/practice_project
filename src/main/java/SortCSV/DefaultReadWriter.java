@@ -17,8 +17,6 @@ interface ReadWriterCSV {
 
     void write(List<String> row);
 
-
-
 }
 
 public class DefaultReadWriter implements ReadWriterCSV {
@@ -53,6 +51,8 @@ public class DefaultReadWriter implements ReadWriterCSV {
         return this.quotechar;
     }
 
+    public int getNumber_line() { return this.number_line; }
+
     public char getEscapehar() {
         return this.escapehar;
     }
@@ -73,6 +73,8 @@ public class DefaultReadWriter implements ReadWriterCSV {
         this.quotechar = quotechar;
     }
 
+    public void setNumber_line(int number_line) { this.number_line = number_line; }
+
     public void setEscapehar(char escapehar) {
         this.escapehar = escapehar;
     }
@@ -86,8 +88,7 @@ public class DefaultReadWriter implements ReadWriterCSV {
         try {
             FileReader reader = new FileReader(new File(fileName));
             CSVReader csvReader = new CSVReader(reader, separator, quotechar, number_line);
-            String[] nextLine;
-            if ((nextLine = csvReader.readNext()) != null)
+            if (csvReader.readNext() != null)
                 return true;
         } catch (IOException e ) {
             e.printStackTrace();
