@@ -91,7 +91,7 @@ public class NaturalMergeSort implements SortCSV {
                     f1.write(new ArrayList<>(row1.getRowValues())); // write first row in first file
                 if (f.hasNextLine()) // file end check
                     row2 = toRow(first_row, f.read()); // packaging second row values
-                while (f.hasNextLine()) { // file division
+                while (true) { // file division
                     if (comparator.compare(row1, row2) > 0) {
                         switch (mark) {
                             case 1: {
@@ -114,7 +114,11 @@ public class NaturalMergeSort implements SortCSV {
                         f2.write(new ArrayList<>(row2.getRowValues()));
                     }
                     row1 = new Row(row2);
-                    row2 = toRow(first_row, f.read());
+                    if (f.hasNextLine())
+                        row2 = toRow(first_row, f.read());
+                    else
+                        break;
+
                 }
                 if (s2 > 0 & mark == 2) {
                     f2.write(end_range);
@@ -133,21 +137,24 @@ public class NaturalMergeSort implements SortCSV {
                     row2 = toRow(first_row, f2.read());
                 }
                 boolean file1, file2;
+                List<String> lst;
                 while (f1.hasNextLine() & f2.hasNextLine()) {
                     file1 = file2 = false;
                     while (!file1 & !file2) {
-                        if (comparator.compare(row1, row2) < 0 & comparator.compare(row1, row2) == 0) {
+                        if (comparator.compare(row1, row2) < 0 || comparator.compare(row1, row2) == 0) {
                             f.write(new ArrayList<>(row1.getRowValues()));
-                            lst_read = f1.read(); //
-                            row1 = toRow(first_row, lst_read); //
+                            lst_read = f1.read();
                             if (lst_read.equals(end_range)) //
                                 file1 = true;
+                            else
+                                row1 = toRow(first_row, lst_read); //
                         } else {
                             f.write(new ArrayList<>(row2.getRowValues()));
                             lst_read = f2.read(); //
-                            row2 = toRow(first_row, lst_read); //
                             if (lst_read.equals(end_range)) //
                                 file2 = true;
+                            else
+                                row2 = toRow(first_row, lst_read); //
                         }
                     }
                     while (!file1) {
