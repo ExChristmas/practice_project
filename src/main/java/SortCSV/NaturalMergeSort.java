@@ -135,7 +135,8 @@ public class NaturalMergeSort implements SortCSV {
                 }
                 boolean file1, file2;
 
-                while (true) {/////////////
+                ////////
+                while (true) {
                     file1 = file2 = false;
                     boolean hasN1 = f1.hasNextLine();
                     boolean hasN2 = f2.hasNextLine();
