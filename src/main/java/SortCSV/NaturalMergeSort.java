@@ -134,7 +134,6 @@ public class NaturalMergeSort implements SortCSV {
                     row2 = toRow(first_row, f2.read());
                 }
                 boolean file1, file2;
-                
 
                 while (true) {/////////////
                     file1 = file2 = false;
