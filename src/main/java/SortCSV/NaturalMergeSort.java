@@ -42,8 +42,8 @@ public class NaturalMergeSort implements SortCSV {
         Map<String, String> row = new LinkedHashMap<>();
         Iterator<String> it_cols = cols.iterator();
         Iterator<String> it_vals = vals.iterator();
-        System.out.println("1 ---" + cols.size());
-        System.out.println("2 ---" + vals.size());
+        System.out.println(cols.size());
+        System.out.println(vals.size());
         while (it_cols.hasNext())
             row.put(it_cols.next(), it_vals.next());
         return new Row(row);
@@ -69,7 +69,7 @@ public class NaturalMergeSort implements SortCSV {
         try {
             int s1, s2, mark;
             s1 = s2 = 1;
-            ArrayList<String> end_range = new ArrayList<>();
+            List<String> end_range = new ArrayList<>();
             end_range.add("'");
             ReadWriterCSV f = createReadWriter(fileNameSort, separator, quotechar,
                     number_line, escapechar, lineEnd); // reader for main file
@@ -91,7 +91,7 @@ public class NaturalMergeSort implements SortCSV {
                     f1.write(new ArrayList<>(row1.getRowValues())); // write first row in first file
                 if (f.hasNextLine()) // file end check
                     row2 = toRow(first_row, f.read()); // packaging second row values
-                while (f.hasNextLine()) { // file division
+                while (true) { // file division
                     if (comparator.compare(row1, row2) > 0) {
                         switch (mark) {
                             case 1: {
@@ -114,6 +114,7 @@ public class NaturalMergeSort implements SortCSV {
                         f2.write(new ArrayList<>(row2.getRowValues()));
                     }
                     row1 = new Row(row2);
+                    if (!f.hasNextLine()) break;
                     row2 = toRow(first_row, f.read());
                 }
                 if (s2 > 0 & mark == 2) {
@@ -124,7 +125,7 @@ public class NaturalMergeSort implements SortCSV {
                 }
 
                 //clearing main file
-                (new FileWriter(new File("newfileCopy.csv"))).write("");
+                new FileWriter(new File("newfileCopy.csv"), false);
 
                 if (f1.hasNextLine()) {
                     row1 = toRow(first_row, f1.read());
@@ -133,15 +134,23 @@ public class NaturalMergeSort implements SortCSV {
                     row2 = toRow(first_row, f2.read());
                 }
                 boolean file1, file2;
-                while (f1.hasNextLine() & f2.hasNextLine()) {
+
+                //------------------- TODO ----------------------------------
+
+                while (true) {/////////////
                     file1 = file2 = false;
-                    while (!file1 & !file2) {
-                        if (comparator.compare(row1, row2) < 0 & comparator.compare(row1, row2) == 0) {
+                    boolean hasN1 = f1.hasNextLine();
+                    boolean hasN2 = f2.hasNextLine();
+                    while (!file1 && !file2) {
+                        if (comparator.compare(row1, row2) <= 0) {
                             f.write(new ArrayList<>(row1.getRowValues()));
                             lst_read = f1.read(); //
-                            row1 = toRow(first_row, lst_read); //
-                            if (lst_read.equals(end_range)) //
+                            if (lst_read.equals(end_range)) {
+                                row1 = toRow(first_row, f1.read()); //
                                 file1 = true;
+                            } else {
+                                row1 = toRow(first_row, lst_read);
+                            }
                         } else {
                             f.write(new ArrayList<>(row2.getRowValues()));
                             lst_read = f2.read(); //

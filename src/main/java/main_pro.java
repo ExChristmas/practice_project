@@ -88,8 +88,12 @@ public class main_pro {
 //        b = read_writer.read();
 //        System.out.println(a);
 //        System.out.println(b);
-        (new FileWriter(new File("newfileCopy.csv"))).write("");
-        NaturalMergeSort sort = new NaturalMergeSort("f1.csv", "f2.csv");
-        sort.sort("newfile.csv", "Id", ',', '"', 0, '|', "\n");
+
+
+
+//        (new FileWriter(new File("newfileCopy.csv"))).write("");
+//        NaturalMergeSort sort = new NaturalMergeSort("f1.csv", "f2.csv");
+//        sort.sort("newfile.csv", "Id", ',', '"', 0, '|', "\n");
+        File f = new File("data.csv");
     }
 }
