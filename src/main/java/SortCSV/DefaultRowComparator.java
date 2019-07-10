@@ -6,7 +6,7 @@ public class DefaultRowComparator implements Comparator<Row> {
 
     private String column;
 
-    DefaultRowComparator(String column) {
+    public DefaultRowComparator(String column) {
         this.column = column;
     }
 

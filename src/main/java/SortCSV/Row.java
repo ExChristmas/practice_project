@@ -6,6 +6,8 @@ public class Row {
 
     private Map<String, String> values;
 
+    public Row() {}
+
     public Row(int size) {
         initializeMap(size);
     }

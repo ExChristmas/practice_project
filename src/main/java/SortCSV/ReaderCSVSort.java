@@ -2,7 +2,7 @@ package SortCSV;
 
 import java.util.List;
 
-interface ReaderCSVSort {
+public interface ReaderCSVSort {
 
     boolean hasNextLine();
 

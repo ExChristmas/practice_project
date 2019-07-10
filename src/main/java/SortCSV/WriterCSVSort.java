@@ -2,7 +2,7 @@ package SortCSV;
 
 import java.util.List;
 
-interface WriterCSVSort {
+public interface WriterCSVSort {
 
     void write(List<String> row);
 

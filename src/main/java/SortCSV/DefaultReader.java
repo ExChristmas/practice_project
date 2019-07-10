@@ -11,17 +11,22 @@ import java.util.List;
 // deal with "number_line" and CSVreader
 public class DefaultReader implements ReaderCSVSort {
 
-    private CSVReader csvReader;
+    private FileReader fileReader;
+    private char separator;
+    private char quotechar;
     private int number_line;
 
-    DefaultReader(String fileName, char separator, char qoutechar, int number_line) throws IOException{
+    public DefaultReader(String fileName, char separator, char qoutechar, int number_line) throws IOException{
         this.number_line = number_line;
-        csvReader = new CSVReader(new FileReader(new File(fileName)), separator, qoutechar, this.number_line);
+        this.quotechar = qoutechar;
+        this.separator = separator;
+        fileReader = new FileReader(new File(fileName));
     }
 
     @Override
     public boolean hasNextLine() {
         try {
+            CSVReader csvReader = new CSVReader(fileReader, separator, quotechar, this.number_line);
             if (csvReader.readNext() != null)
                 return true;
         } catch (IOException e ) {
@@ -35,6 +40,7 @@ public class DefaultReader implements ReaderCSVSort {
         List<String> components = new ArrayList<>();
         String[] components_temp;
         try {
+            CSVReader csvReader = new CSVReader(fileReader, separator, quotechar, this.number_line);
             if ((components_temp = csvReader.readNext()) == null)
                 return components;
             else

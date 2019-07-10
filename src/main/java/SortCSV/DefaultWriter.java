@@ -9,15 +9,24 @@ import java.util.List;
 
 public class DefaultWriter implements WriterCSVSort {
 
-    private CSVWriter csvWriter;
+    private FileWriter fileWriter;
+    private char separator;
+    private char quotechar;
+    private char escapechar;
+    private String lineEnd;
 
-    DefaultWriter(String fileName, char separator, char quotechar, char escapechar, String lineEnd) throws IOException{
-        csvWriter = new CSVWriter(new FileWriter(fileName, true), separator, quotechar, escapechar, lineEnd);
+    public DefaultWriter(String fileName, char separator, char quotechar, char escapechar, String lineEnd) throws IOException {
+        this.separator = separator;
+        this.quotechar = quotechar;
+        this.escapechar = escapechar;
+        this.lineEnd = lineEnd;
+        this.fileWriter = new FileWriter(fileName, true);
     }
 
     @Override
     public void write(List<String> row) {
         try {
+            CSVWriter csvWriter = new CSVWriter(fileWriter, separator, quotechar, escapechar, lineEnd);
             Iterator<String> it = row.iterator();
             String[] row_write = new String[row.size()];
             for (int i = 0; i < row.size(); i++)
