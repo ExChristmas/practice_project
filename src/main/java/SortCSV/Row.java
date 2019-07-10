@@ -6,8 +6,8 @@ public class Row {
 
     private Map<String, String> values;
 
-    public Row() {
-        initializeMap();
+    public Row(int size) {
+        initializeMap(size);
     }
 
     public Row (Row other) {
@@ -15,27 +15,32 @@ public class Row {
     }
 
     public Row(Map<String, String> values) {
-        initializeMap();
+        initializeMap(values.size());
         for (Map.Entry<String, String> entry : values.entrySet())
             this.values.put(entry.getKey(), entry.getValue());
     }
 
     public Row(String[] cols, String[] vals) {
-        initializeMap();
-        int len_cols = cols.length;
-        try {
-            for (int i = 0; i < len_cols; i++)
-                values.put(cols[i], vals[i]);
-        } catch (NullPointerException e) {
-            System.out.println("Error, NullPointerException!");
-        }
-        catch (Exception e) {
-            System.out.println("Error");
+        if (cols == null || vals == null) {
+            System.out.println("Columns or Values is null");
+        } else if (cols.length != vals.length) {
+            System.out.println("Lengths Columns and Values is not equal");
+        } else {
+            initializeMap(cols.length);
+            // исправить
+            try {
+                for (int i = 0; i < cols.length; i++)
+                    values.put(cols[i], vals[i]);
+            } catch (NullPointerException e) {
+                System.out.println("Error, NullPointerException!");
+            } catch (Exception e) {
+                System.out.println("Error");
+            }
         }
     }
 
-    private void initializeMap() {
-        this.values = new LinkedHashMap<>();
+    private void initializeMap(int size) {
+        this.values = new LinkedHashMap<>(size);
     }
 
     public Map<String, String> getValues() {
