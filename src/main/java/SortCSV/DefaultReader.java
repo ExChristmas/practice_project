@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+// deal with "number_line" and CSVreader
 public class DefaultReader implements ReaderCSVSort {
 
     private CSVReader csvReader;

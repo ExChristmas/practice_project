@@ -39,6 +39,12 @@ public class NaturalMergeSort implements SortCSV {
         this.workFileName2 = workFile2;
     }
 
+    private class Sorter {
+
+        
+
+    }
+
     private Row toRow(List<String> cols, List<String> vals) { //added
         Map<String, String> row = new LinkedHashMap<>();
         Iterator<String> it_cols = cols.iterator();
