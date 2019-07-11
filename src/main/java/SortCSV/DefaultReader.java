@@ -2,37 +2,37 @@ package SortCSV;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-// deal with "number_line" and CSVreader
+
 public class DefaultReader implements ReaderCSVSort {
 
-    private FileReader fileReader;
+    private String fileName;
+    private CSVReader csvReader;
     private char separator;
     private char quotechar;
-    private int number_line;
 
-    public DefaultReader(String fileName, char separator, char qoutechar, int number_line) throws IOException{
-        this.number_line = number_line;
-        this.quotechar = qoutechar;
+    public DefaultReader(String fileName, char separator, char quotechar) throws IOException {
+        this.quotechar = quotechar;
         this.separator = separator;
-        fileReader = new FileReader(new File(fileName));
+        this.fileName = fileName;
+        this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quotechar);
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     @Override
-    public boolean hasNextLine() {
+    public void changeFile(String fileName) {
+        this.fileName = fileName;
         try {
-            CSVReader csvReader = new CSVReader(fileReader, separator, quotechar, this.number_line);
-            if (csvReader.readNext() != null)
-                return true;
-        } catch (IOException e ) {
+            this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quotechar);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     @Override
@@ -40,17 +40,18 @@ public class DefaultReader implements ReaderCSVSort {
         List<String> components = new ArrayList<>();
         String[] components_temp;
         try {
-            CSVReader csvReader = new CSVReader(fileReader, separator, quotechar, this.number_line);
-            if ((components_temp = csvReader.readNext()) == null)
+            if ((components_temp = csvReader.readNext()) == null) {
+                components = null;
                 return components;
-            else
+            } else {
                 components.addAll(Arrays.asList(components_temp));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error");
         }
-        number_line++;
+//        number_line++;
         return components;
     }
 }

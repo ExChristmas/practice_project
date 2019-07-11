@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ReaderCSVSort {
 
-    boolean hasNextLine();
+    void changeFile(String fileName);
 
     List<String> read();
 

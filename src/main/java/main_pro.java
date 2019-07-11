@@ -1,27 +1,30 @@
-import java.io.FileWriter;
+import java.io.*;
 import java.util.*;
 
 import SortCSV.*;
-import java.io.File;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class main_pro {
 
     public static void main(String[] args) throws Exception {
         ReaderCSVSort reader = new DefaultReader("newfile.csv",
-                ',', '"', 0);
+                ',', '"');
         List<Row> rows = new ArrayList<>();
         List<String> first_row = reader.read();
-        first_row = reader.read();
         List<String> components = new ArrayList<>();
         Iterator<String> it_first_row;
         Iterator<String> it_components;
         boolean fl = true;
         Map<String, String> row_temp = new LinkedHashMap<>();
         Row row = new Row();
-        while(reader.hasNextLine()) {
+        while(true) {
             it_first_row = first_row.iterator();
             components.clear();
             components = reader.read();
+            if (components == null) {
+                break;
+            }
             it_components = components.iterator();
             for (int i = 0; i < first_row.size(); i++)
                 row_temp.put(it_first_row.next(), it_components.next());
@@ -41,6 +44,7 @@ public class main_pro {
             writer.write(row_write);
             row_write.clear();
         }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
 //        it_first_row = first_row.iterator();
 //        String col = it_first_row.next();
 //        col = it_first_row.next();
@@ -92,10 +96,53 @@ public class main_pro {
 //        System.out.println(b);
 
 
-
 //        (new FileWriter(new File("newfileCopy.csv"))).write("");
 //        NaturalMergeSort sort = new NaturalMergeSort("f1.csv", "f2.csv");
 //        sort.sort("newfile.csv", "Id", ',', '"', 0, '|', "\n");
 //        File f = new File("data.csv");
+
+
+////////////////////////////////////////////////!!!!!!!!!!!!!!!!!/////////////////////////
+//        FileInputStream fis = new FileInputStream("newfile.csv");
+//        InputStreamReader isr = new InputStreamReader(fis);
+//
+//
+//        CSVReader reader = new CSVReader(isr, ',', ';', '|');
+//
+//        String[] cols, vals;
+//        cols = reader.readNext();
+//        vals = reader.readNext();
+//        Map<String, String> values = new LinkedHashMap<>();
+//        while (vals != null) {
+//            List<String> temp = new ArrayList<>(Arrays.asList(vals));
+//            for (int i = 0; i < cols.length; i++)
+//                values.put(cols[i], vals[i]);
+//            System.out.println(temp);
+//            vals = reader.readNext();
+//            if (vals == null)
+//                break;
+//        }
+//
+//        fis.close();
+//
+//        System.out.println(values);
+//
+//        int i = 0;
+//        cols = new String[values.size()];
+//        vals = new String[values.size()];
+//        for (Map.Entry<String, String> entry : values.entrySet()) {
+//            cols[i] = entry.getKey();
+//            vals[i] = entry.getValue();
+//            i++;
+//        }
+//
+//        FileOutputStream fos = new FileOutputStream("newfileCopy.csv", true);
+//        OutputStreamWriter osw = new OutputStreamWriter(fos);
+//
+//        CSVWriter writer = new CSVWriter(osw);
+//
+//        writer.writeNext(cols);
+//        writer.writeNext(vals);
+//        writer.close();
     }
 }
