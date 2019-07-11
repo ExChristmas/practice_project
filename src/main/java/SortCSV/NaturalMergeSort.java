@@ -54,7 +54,7 @@ public class NaturalMergeSort implements SortCSV {
             end_range = new ArrayList<>();
             end_range.add("'");
         }
-
+        
         //stoped here!!!!!!!!!
         void separation(String fileNameSort, Comparator<Row> comparator, ReaderCSVSort reader, WriterCSVSort writer) {
             row1 = toRow(first_row, f.read()); // packaging first row values

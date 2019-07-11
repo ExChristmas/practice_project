@@ -1,2 +1,18 @@
 "Id"," Name"," Number_Phone"," Work_pleace"
-"Id"," Name"," Number_Phone"," Work_pleace"
+"4"," Alex"," 990458958395354"," Exactpro"
+"2"," Alex"," 790458958393231"," Exact"
+"1"," Alex"," 390458954534544"," Ex"
+"5"," Alex"," 290458958395354"," Exac"
+"4"," Alex"," 190458958395354"," Ex"
+ Id , | Name , | Number_Phone , | Work_pleace 
+ 4 , | Alex , | 990458958395354 , | Exactpro 
+ 2 , | Alex , | 790458958393231 , | Exact 
+ 1 , | Alex , | 390458954534544 , | Ex 
+ 5 , | Alex , | 290458958395354 , | Exac 
+ 4 , | Alex , | 190458958395354 , | Ex 
+ Id ,   Name ,   Number_Phone ,   Work_pleace 
+ 4 ,   Alex ,   990458958395354 ,   Exactpro 
+ 2 ,   Alex ,   790458958393231 ,   Exact 
+ 1 ,   Alex ,   390458954534544 ,   Ex 
+ 5 ,   Alex ,   290458958395354 ,   Exac 
+ 4 ,   Alex ,   190458958395354 ,   Ex 

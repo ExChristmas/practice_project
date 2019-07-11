@@ -49,8 +49,8 @@ public class DefaultWriter implements WriterCSVSort {
             for (int i = 0; i < row.size(); i++)
                 row_write[i] = it.next();
             csvWriter.writeNext(row_write);
-            csvWriter.close();
-        } catch (IOException e) {
+              csvWriter.flush();
+            } catch (IOException e) {
             e.printStackTrace();
         }
     }

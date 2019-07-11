@@ -1,9 +1,6 @@
-import java.io.*;
 import java.util.*;
 
 import SortCSV.*;
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class main_pro {
 
@@ -35,7 +32,7 @@ public class main_pro {
             System.out.println(value.getValues());
         }
         WriterCSVSort writer = new DefaultWriter("newfileCopy.csv",
-                ',', '"', '|', "\n");
+                ',', ' ', ' ', "\n");
         writer.write(first_row);
         List<String> row_write = new ArrayList<>();
         for (Iterator<Row> it = rows.iterator(); it.hasNext(); ) {
