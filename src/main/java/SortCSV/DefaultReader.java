@@ -51,7 +51,6 @@ public class DefaultReader implements ReaderCSVSort {
         } catch (Exception e) {
             System.out.println("Error");
         }
-//        number_line++;
         return components;
     }
 }
