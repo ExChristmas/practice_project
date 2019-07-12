@@ -33,7 +33,7 @@ public class DefaultWriter implements WriterCSVSort {
     public void changeFile(String fileName) {
         this.fileName = fileName;
         try {
-            this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName)),
+            this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
                     separator, quotechar, escapechar, lineEnd);
         } catch (IOException e) {
             e.printStackTrace();

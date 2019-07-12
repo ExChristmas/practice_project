@@ -41,8 +41,7 @@ public class DefaultReader implements ReaderCSVSort {
         String[] components_temp;
         try {
             if ((components_temp = csvReader.readNext()) == null) {
-                components = null;
-                return components;
+                return null;
             } else {
                 components.addAll(Arrays.asList(components_temp));
             }

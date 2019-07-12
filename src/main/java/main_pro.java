@@ -5,42 +5,43 @@ import SortCSV.*;
 public class main_pro {
 
     public static void main(String[] args) throws Exception {
-        ReaderCSVSort reader = new DefaultReader("newfile.csv",
-                ',', '"');
-        List<Row> rows = new ArrayList<>();
-        List<String> first_row = reader.read();
-        List<String> components = new ArrayList<>();
-        Iterator<String> it_first_row;
-        Iterator<String> it_components;
-        boolean fl = true;
-        Map<String, String> row_temp = new LinkedHashMap<>();
-        Row row = new Row();
-        while(true) {
-            it_first_row = first_row.iterator();
-            components.clear();
-            components = reader.read();
-            if (components == null) {
-                break;
-            }
-            it_components = components.iterator();
-            for (int i = 0; i < first_row.size(); i++)
-                row_temp.put(it_first_row.next(), it_components.next());
-            rows.add(new Row(row_temp));
-            row_temp.clear();
-        }
-        for (Row value : rows) {
-            System.out.println(value.getValues());
-        }
-        WriterCSVSort writer = new DefaultWriter("newfileCopy.csv",
-                ',', ' ', ' ', "\n");
-        writer.write(first_row);
-        List<String> row_write = new ArrayList<>();
-        for (Iterator<Row> it = rows.iterator(); it.hasNext(); ) {
-            for (Map.Entry<String, String> entry : it.next().getValues().entrySet())
-                row_write.add(entry.getValue());
-            writer.write(row_write);
-            row_write.clear();
-        }
+//        ReaderCSVSort reader = new DefaultReader("newfile.csv",
+//                ',', '"');
+//        List<Row> rows = new ArrayList<>();
+//        List<String> first_row = reader.read();
+//        List<String> components = new ArrayList<>();
+//        Iterator<String> it_first_row;
+//        Iterator<String> it_components;
+//        boolean fl = true;
+//        Map<String, String> row_temp = new LinkedHashMap<>();
+//        Row row = new Row();
+//        while(true) {
+//            it_first_row = first_row.iterator();
+//            components.clear();
+//            components = reader.read();
+//            if (components == null) {
+//                break;
+//            }
+//            it_components = components.iterator();
+//            for (int i = 0; i < first_row.size(); i++)
+//                row_temp.put(it_first_row.next(), it_components.next());
+//            rows.add(new Row(row_temp));
+//            row_temp.clear();
+//        }
+//        for (Row value : rows) {
+//            System.out.println(value.getValues());
+//        }
+//        WriterCSVSort writer = new DefaultWriter("newfileCopy.csv",
+//                ',', '$', ' ', "\n");
+//        writer.write(first_row);
+//        List<String> row_write = new ArrayList<>();
+//        for (Iterator<Row> it = rows.iterator(); it.hasNext(); ) {
+//            for (Map.Entry<String, String> entry : it.next().getValues().entrySet())
+//                row_write.add(entry.getValue());
+//            writer.write(row_write);
+//            row_write.clear();
+//        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////
 //        it_first_row = first_row.iterator();
 //        String col = it_first_row.next();
@@ -141,5 +142,12 @@ public class main_pro {
 //        writer.writeNext(cols);
 //        writer.writeNext(vals);
 //        writer.close();
+
+        ReaderCSVSort reader = new DefaultReader("newfile.csv", ',', '"');
+        WriterCSVSort writer = new DefaultWriter("workfile1.csv",
+                ',', '"', '|', "\n");
+        Comparator<Row> comparator = new DefaultRowComparator("Id");
+        SortCSV sortCSV = new NaturalMergeSort("workfile1.csv", "workfile2.csv");
+        sortCSV.sort("newfile.csv", comparator, reader, writer);
     }
 }
