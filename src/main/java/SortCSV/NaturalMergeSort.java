@@ -43,11 +43,14 @@ public class NaturalMergeSort implements SortCSV {
         Sorter() {
             row1 = new Row();
             row2 = new Row();
+            end_range = new ArrayList<>();
+            end_range.add("'");
+        }
+
+        void initialization() {
             this.s1 = 0;
             this.s2 = 0;
             this.mark = 1;
-            end_range = new ArrayList<>();
-            end_range.add("'");
         }
 
         void separation(String workFile1, String workFile2, Comparator<Row> comparator,
@@ -106,16 +109,16 @@ public class NaturalMergeSort implements SortCSV {
             }
         }
 
-        void merge(String workFile1, String workFile2, Comparator<Row> comparator,
+        void merge(String fileSort, String workFile1, String workFile2, Comparator<Row> comparator,
                    ReaderCSVSort reader, WriterCSVSort writer) {
+            writer.changeFile(fileSort);
             reader.changeFile(workFile1);
-            reader.changeFile(workFile2);
             List<String> lst_read1 = reader.read();
+            reader.changeFile(workFile2);
             List<String> lst_read2 = reader.read();
 
             if (lst_read1 != null) {
                 row1 = toRow(first_row, lst_read1);
-                lst_read1 = reader.read();
             }
             if (lst_read1 != null) {
                 row2 = toRow(first_row, lst_read1);
@@ -247,9 +250,16 @@ public class NaturalMergeSort implements SortCSV {
     @Override
     public void sort (String fileNameSort, Comparator<Row> comparator, ReaderCSVSort reader, WriterCSVSort writer) {
         Sorter sorter = new Sorter();
-        //while(sorter.s1 > 0 && sorter.s2 > 0) {
-            sorter.separation(workFile1, workFile2, comparator, reader, writer);
-        //}
+        int s1 = 1, s2 = 1;
+        while(s1 > 0 && s2 > 0) {
+            sorter.initialization();
+            //sorter.separation(workFile1, workFile2, comparator, reader, writer);
+            reader.changeFile(fileNameSort);
+            sorter.first_row = reader.read();
+            sorter.merge(fileNameSort, workFile1, workFile2, comparator, reader, writer);
+            s1 = sorter.s1;
+            s2 = sorter.s2;
+        }
     }
 //
 //    public void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
