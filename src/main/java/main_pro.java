@@ -143,11 +143,13 @@ public class main_pro {
 //        writer.writeNext(vals);
 //        writer.close();
 
-        ReaderCSVSort reader = new DefaultReader("newfile.csv", ',', '"');
+        List<ReaderCSVSort> readers = new ArrayList<>();
+        readers.add(new DefaultReader("newfile.csv", ',', '"'));
+        readers.add(new DefaultReader("newfile.csv", ',', '"'));
         WriterCSVSort writer = new DefaultWriter("workfile1.csv",
                 ',', '"', '|', "\n");
         Comparator<Row> comparator = new DefaultRowComparator("Id");
         SortCSV sortCSV = new NaturalMergeSort("workfile1.csv", "workfile2.csv");
-        sortCSV.sort("newfile.csv", comparator, reader, writer);
+        sortCSV.sort("newfile.csv", comparator, readers, writer);
     }
 }
