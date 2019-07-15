@@ -96,9 +96,11 @@ public class NaturalMergeSort implements SortCSV {
                 if (mark == 1) {
                     writer.changeFile(workFile1);
                     writer.write(new ArrayList<>(row2.getRowValues()));
+                    s1++;
                 } else {
                     writer.changeFile(workFile2);
                     writer.write(new ArrayList<>(row2.getRowValues()));
+                    s2++;
                 }
                 row1 = new Row(row2);
                 lst_read = reader.read();
@@ -133,7 +135,7 @@ public class NaturalMergeSort implements SortCSV {
             if (lst_read1 != null) {
                 row1 = toRow(first_row, lst_read1);
             }
-            if (lst_read1 != null) {
+            if (lst_read2 != null) {
                 row2 = toRow(first_row, lst_read2);
             }
 
