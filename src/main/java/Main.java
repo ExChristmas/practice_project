@@ -1,6 +1,6 @@
 import java.util.*;
 
-import SortCSV.*;
+import sortcsv.*;
 
 public class Main {
 

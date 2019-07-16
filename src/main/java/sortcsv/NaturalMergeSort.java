@@ -1,4 +1,4 @@
-package SortCSV;
+package sortcsv;
 
 import java.io.IOException;
 import java.util.*;
@@ -59,14 +59,14 @@ public class NaturalMergeSort implements SortCSV {
     @Override
     public void sort (String fileNameSort, Comparator<Row> comparator, List<ReaderCSVSort> readers, WriterCSVSort writer) {
         Sorter sorter = new Sorter();
-        int s1 = 1, s2 = 1;
+        int fileFlag1 = 1, fileFlag2 = 1;
         try {
-            while (s1 > 0 && s2 > 0) {
+            while (fileFlag1 > 0 && fileFlag2 > 0) {
                 sorter.initialization();
                 sorter.separation(fileNameSort, workFile1, workFile2, comparator, readers, writer);
                 sorter.merge(fileNameSort, workFile1, workFile2, comparator, readers, writer);
-                s1 = sorter.s1;
-                s2 = sorter.s2;
+                fileFlag1 = sorter.fileFlag1;
+                fileFlag2 = sorter.fileFlag2;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,11 +78,10 @@ public class NaturalMergeSort implements SortCSV {
         private Row row1;
         private Row row2;
         private List<String> first_row;
-        private int s1;
-        private int s2;
-        private int mark;
+        private int fileFlag1;
+        private int fileFlag2;
+        private int marker;
         private List<String> end_range;
-        private boolean fl_firstRow;
 
         Sorter() {
             row1 = new Row();
@@ -92,9 +91,9 @@ public class NaturalMergeSort implements SortCSV {
         }
 
         void initialization() {
-            this.s1 = 0;
-            this.s2 = 0;
-            this.mark = 1;
+            this.fileFlag1 = 0;
+            this.fileFlag2 = 0;
+            this.marker = 1;
         }
 
         void separation(String fileNameSort, String workFile1, String workFile2, Comparator<Row> comparator,
@@ -103,10 +102,7 @@ public class NaturalMergeSort implements SortCSV {
             Iterator<ReaderCSVSort> it_readers = readers.iterator();
             ReaderCSVSort reader = it_readers.next();
             reader.changeFile(fileNameSort);
-            if (!fl_firstRow) {
-                first_row = reader.read();
-                fl_firstRow = true;
-            }
+            first_row = reader.read();
             lst_read = reader.read();
             if (lst_read != null) { // file end check
                 writer.changeFile(workFile1);
@@ -119,29 +115,29 @@ public class NaturalMergeSort implements SortCSV {
             }
             while (lst_read != null) { // file division
                 if (comparator.compare(row1, row2) > 0) {
-                    switch (mark) {
+                    switch (marker) {
                         case 1: {
                             writer.write(end_range);
-                            mark = 2;
-                            s1++;
+                            marker = 2;
+                            fileFlag1++;
                             break;
                         }
                         case 2: {
                             writer.write(end_range);
-                            mark = 1;
-                            s2++;
+                            marker = 1;
+                            fileFlag2++;
                             break;
                         }
                     }
                 }
-                if (mark == 1) {
+                if (marker == 1) {
                     writer.changeFile(workFile1);
                     writer.write(new ArrayList<>(row2.getRowValues()));
-                    s1++;
+                    fileFlag1++;
                 } else {
                     writer.changeFile(workFile2);
                     writer.write(new ArrayList<>(row2.getRowValues()));
-                    s2++;
+                    fileFlag2++;
                 }
                 row1 = new Row(row2);
                 lst_read = reader.read();
@@ -151,11 +147,11 @@ public class NaturalMergeSort implements SortCSV {
                     break;
                 }
             }
-            if (s2 > 0 && mark == 2) {
+            if (fileFlag2 > 0 && marker == 2) {
                 writer.changeFile(workFile2);
                 writer.write(end_range);
             }
-            if (s1 > 0 && mark == 1) {
+            if (fileFlag1 > 0 && marker == 1) {
                 writer.changeFile(workFile1);
                 writer.write(end_range);
             }
@@ -168,10 +164,11 @@ public class NaturalMergeSort implements SortCSV {
             ReaderCSVSort reader1 = it_readers.next();
             ReaderCSVSort reader2 = it_readers.next();
             writer.changeFile(fileSort);
+            writer.write(first_row);
             reader1.changeFile(workFile1);
             List<String> lst_read1 = reader1.read();
             List<String> lst_read2 = null;
-            if (s2 != 0) {
+            if (fileFlag2 != 0) {
                 reader2.changeFile(workFile2);
                 lst_read2 = reader2.read();
             }
@@ -179,7 +176,7 @@ public class NaturalMergeSort implements SortCSV {
             if (lst_read1 != null) {
                 row1 = toRow(first_row, lst_read1);
             }
-            if ((lst_read2 != null) && (s2 != 0)) {
+            if ((lst_read2 != null) && (fileFlag2 != 0)) {
                 row2 = toRow(first_row, lst_read2);
             }
 

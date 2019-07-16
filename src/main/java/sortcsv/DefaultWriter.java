@@ -1,4 +1,4 @@
-package SortCSV;
+package sortcsv;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -11,18 +11,18 @@ public class DefaultWriter implements WriterCSVSort {
     private String fileName;
     private CSVWriter csvWriter;
     private char separator;
-    private char quotechar;
-    private char escapechar;
+    private char quoteChar;
+    private char escapeChar;
     private String lineEnd;
 
-    public DefaultWriter(String fileName, char separator, char quotechar, char escapechar, String lineEnd) throws IOException {
+    public DefaultWriter(String fileName, char separator, char quoteChar, char escapeChar, String lineEnd) throws IOException {
         this.fileName = fileName;
         this.separator = separator;
-        this.quotechar = quotechar;
-        this.escapechar = escapechar;
+        this.quoteChar = quoteChar;
+        this.escapeChar = escapeChar;
         this.lineEnd = lineEnd;
         this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
-                separator, quotechar, escapechar, lineEnd);
+                separator, quoteChar, escapeChar, lineEnd);
     }
 
     public String getFileName() {
@@ -34,7 +34,7 @@ public class DefaultWriter implements WriterCSVSort {
         this.fileName = fileName;
         try {
             this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
-                    separator, quotechar, escapechar, lineEnd);
+                    separator, quoteChar, escapeChar, lineEnd);
         } catch (IOException e) {
             e.printStackTrace();
         }

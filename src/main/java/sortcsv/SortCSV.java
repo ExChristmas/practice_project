@@ -1,4 +1,7 @@
-package SortCSV;
+package sortcsv;
+
+import sortcsv.ReaderCSVSort;
+import sortcsv.Row;
 
 import java.util.List;
 import java.util.Comparator;

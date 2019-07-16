@@ -1,4 +1,4 @@
-package SortCSV;
+package sortcsv;
 
 import java.util.List;
 

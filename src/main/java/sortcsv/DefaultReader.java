@@ -1,4 +1,4 @@
-package SortCSV;
+package sortcsv;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -12,13 +12,13 @@ public class DefaultReader implements ReaderCSVSort {
     private String fileName;
     private CSVReader csvReader;
     private char separator;
-    private char quotechar;
+    private char quoteChar;
 
-    public DefaultReader(String fileName, char separator, char quotechar) throws IOException {
-        this.quotechar = quotechar;
+    public DefaultReader(String fileName, char separator, char quoteChar) throws IOException {
+        this.quoteChar = quoteChar;
         this.separator = separator;
         this.fileName = fileName;
-        this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quotechar);
+        this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quoteChar);
     }
 
     public String getFileName() {
@@ -29,7 +29,7 @@ public class DefaultReader implements ReaderCSVSort {
     public void changeFile(String fileName) {
         this.fileName = fileName;
         try {
-            this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quotechar);
+            this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quoteChar);
         } catch (IOException e) {
             e.printStackTrace();
         }
