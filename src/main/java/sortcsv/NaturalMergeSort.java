@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 
 public class NaturalMergeSort implements SortCSV {
 
+    private static final Logger logger = Logger.getLogger(NaturalMergeSort.class);
+
     private String workFile1;
     private String workFile2;
-
-    private static final Logger log = Logger.getLogger(NaturalMergeSort.class);
 
     public NaturalMergeSort(String workFile1, String workFile2) {
         this.workFile1 = workFile1;
@@ -44,8 +44,7 @@ public class NaturalMergeSort implements SortCSV {
                 row.put(it_cols.next(), it_vals.next());
             return new Row(row);
         } else {
-            log.error("Column sizes and values differ");
-//            System.out.println("Column sizes and values differ");
+            logger.error("Column sizes and values differ");
             return null;
         }
     }
@@ -163,6 +162,7 @@ public class NaturalMergeSort implements SortCSV {
             List<String> lst_read1 = reader1.read();
             List<String> lst_read2 = null;
             if (fileFlag2 != 0) {
+                logger.info("Merge final result in original file");
                 reader2.changeFile(workFile2);
                 lst_read2 = reader2.read();
             }
@@ -264,10 +264,10 @@ public class NaturalMergeSort implements SortCSV {
                 }
             }
              if (!(new File(workFile1)).delete()) {
-                 System.out.println("File don't found or don't can delete");
+                 logger.error("File" + workFile1 + "don't found or don't can delete");
              }
              if (!(new File(workFile2)).delete()) {
-                 System.out.println("File don't found or don't can delete");
+                 logger.error("File" + workFile2 + "don't found or don't can delete");
              }
         }
     }

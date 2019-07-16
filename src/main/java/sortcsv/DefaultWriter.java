@@ -1,12 +1,15 @@
 package sortcsv;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 
 public class DefaultWriter implements WriterCSVSort {
+
+    private static final Logger logger = Logger.getLogger(DefaultWriter.class);
 
     private String fileName;
     private CSVWriter csvWriter;
@@ -36,6 +39,7 @@ public class DefaultWriter implements WriterCSVSort {
             this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
                     separator, quoteChar, escapeChar, lineEnd);
         } catch (IOException e) {
+            logger.error("IOException in change file from writer");
             e.printStackTrace();
         }
     }
@@ -51,7 +55,10 @@ public class DefaultWriter implements WriterCSVSort {
             csvWriter.writeNext(row_write);
             csvWriter.flush();
         } catch (IOException e) {
+            logger.error("IOExeption when writing");
             e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("Some error when writing");
         }
     }
 }

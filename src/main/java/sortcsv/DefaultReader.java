@@ -1,6 +1,7 @@
 package sortcsv;
 
 import au.com.bytecode.opencsv.CSVReader;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DefaultReader implements ReaderCSVSort {
+
+    private static final Logger logger = Logger.getLogger(DefaultReader.class);
 
     private String fileName;
     private CSVReader csvReader;
@@ -31,6 +34,7 @@ public class DefaultReader implements ReaderCSVSort {
         try {
             this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quoteChar);
         } catch (IOException e) {
+            logger.error("IOExeption in change file from reader");
             e.printStackTrace();
         }
     }
@@ -41,14 +45,16 @@ public class DefaultReader implements ReaderCSVSort {
         String[] components_temp;
         try {
             if ((components_temp = csvReader.readNext()) == null) {
+                logger.info("End of file when reading");
                 return null;
             } else {
                 components.addAll(Arrays.asList(components_temp));
             }
         } catch (IOException e) {
+            logger.error("IOExeption when reading");
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Error");
+            logger.error("Some error when reading");
         }
         return components;
     }

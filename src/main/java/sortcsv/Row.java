@@ -1,8 +1,12 @@
 package sortcsv;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 public class Row {
+
+    private static final Logger logger = Logger.getLogger(Row.class);
 
     private Map<String, String> values;
 
@@ -24,19 +28,19 @@ public class Row {
 
     public Row(String[] cols, String[] vals) {
         if (cols == null || vals == null) {
-            System.out.println("Columns or Values is null");
+            logger.error("Columns or Values is null");
         } else if (cols.length != vals.length) {
-            System.out.println("Lengths Columns and Values is not equal");
+            logger.error("Lengths Columns and Values is not equal");
         } else {
             initializeMap(cols.length);
-            // исправить
+            // deal with throwing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
             try {
                 for (int i = 0; i < cols.length; i++)
                     values.put(cols[i], vals[i]);
             } catch (NullPointerException e) {
-                System.out.println("Error, NullPointerException!");
+                logger.error("Error, NullPointerException!");
             } catch (Exception e) {
-                System.out.println("Error");
+                logger.error("Some error in constructor from Row");
             }
         }
     }
@@ -58,6 +62,7 @@ public class Row {
         if (values.containsKey(val)) {
             return values.get(val);
         } else {
+            logger.error("NoSuchElementExeption in getValue from Row");
             throw new NoSuchElementException();
         }
     }
