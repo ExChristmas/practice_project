@@ -6,13 +6,13 @@ public class Row {
 
     private Map<String, String> values;
 
-    public Row() {}
+    public Row() { }
 
     public Row(int size) {
         initializeMap(size);
     }
 
-    public Row (Row other) {
+    public Row(Row other) {
         this(other.getValues());
     }
 
@@ -45,15 +45,15 @@ public class Row {
         this.values = new LinkedHashMap<>(size);
     }
 
-    public Map<String, String> getValues() {
+    private Map<String, String> getValues() {
         return values;
     }
 
-    public Collection<String> getRowValues() {
+    Collection<String> getRowValues() {
         return this.values.values();
     }
 
-    public String getValue(String val) throws
+    String getValue(String val) throws
             NoSuchElementException {
         if (values.containsKey(val)) {
             return values.get(val);
@@ -65,10 +65,4 @@ public class Row {
     public void setValue(String column, String value) {
         values.put(column, value);
     }
-
-//    @Override
-//    public int compareTo(Row o) {
-//
-//        int result = this.
-//    }
 }

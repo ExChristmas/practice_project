@@ -50,7 +50,7 @@ public class DefaultWriter implements WriterCSVSort {
                 row_write[i] = it.next();
             csvWriter.writeNext(row_write);
             csvWriter.flush();
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

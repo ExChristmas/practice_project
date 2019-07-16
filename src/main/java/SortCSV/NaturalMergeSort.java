@@ -20,16 +20,57 @@ public class NaturalMergeSort implements SortCSV {
         return this.workFile1;
     }
 
-    public String getWorkFile2() {
-        return this.workFile2;
-    }
-
     public void setWorkFile1(String workFile1) {
         this.workFile1 = workFile1;
     }
 
+    public String getWorkFile2() {
+        return this.workFile2;
+    }
+
     public void setWorkFile2(String workFile2) {
         this.workFile2 = workFile2;
+    }
+
+    private Row toRow(List<String> cols, List<String> vals) { //added
+        if (cols.size() == vals.size()) {
+            Map<String, String> row = new LinkedHashMap<>();
+            Iterator<String> it_cols = cols.iterator();
+            Iterator<String> it_vals = vals.iterator();
+            while (it_cols.hasNext())
+                row.put(it_cols.next(), it_vals.next());
+            return new Row(row);
+        } else {
+            System.out.println("Column sizes and values differ");
+            return null;
+        }
+    }
+
+    private List<String> toList(String[] row) { //added (need?)
+        int len_row = row.length;
+        return new ArrayList<>(Arrays.asList(row).subList(0, len_row));
+    }
+
+    private void equalList(List<String> lst1, List<String> lst2) {
+        lst1.clear();
+        lst1.addAll(lst2);
+    }
+
+    @Override
+    public void sort (String fileNameSort, Comparator<Row> comparator, List<ReaderCSVSort> readers, WriterCSVSort writer) {
+        Sorter sorter = new Sorter();
+        int s1 = 1, s2 = 1;
+        try {
+            while (s1 > 0 && s2 > 0) {
+                sorter.initialization();
+                sorter.separation(fileNameSort, workFile1, workFile2, comparator, readers, writer);
+                sorter.merge(fileNameSort, workFile1, workFile2, comparator, readers, writer);
+                s1 = sorter.s1;
+                s2 = sorter.s2;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class Sorter {
@@ -239,188 +280,4 @@ public class NaturalMergeSort implements SortCSV {
              }
         }
     }
-
-    private Row toRow(List<String> cols, List<String> vals) { //added
-        if (cols.size() == vals.size()) {
-            Map<String, String> row = new LinkedHashMap<>();
-            Iterator<String> it_cols = cols.iterator();
-            Iterator<String> it_vals = vals.iterator();
-            while (it_cols.hasNext())
-                row.put(it_cols.next(), it_vals.next());
-            return new Row(row);
-        } else {
-            System.out.println("Column sizes and values differ");
-            return null;
-        }
-    }
-
-    private List<String> toList(String[] row) { //added (need?)
-        int len_row = row.length;
-        return new ArrayList<>(Arrays.asList(row).subList(0, len_row));
-    }
-
-    private ReadWriterCSV createReadWriter(String nameFile, char separator, char quotechar,
-                                           int number_line, char escapechar, String lineEnd) {
-        return new DefaultReadWriter(nameFile, separator, quotechar, number_line, escapechar, lineEnd);
-    }
-
-    private void equalList(List<String> lst1, List<String> lst2) {
-        lst1.clear();
-        lst1.addAll(lst2);
-    }
-
-    @Override
-    public void sort (String fileNameSort, Comparator<Row> comparator, List<ReaderCSVSort> readers, WriterCSVSort writer) {
-        Sorter sorter = new Sorter();
-        int s1 = 1, s2 = 1;
-        try {
-            while (s1 > 0 && s2 > 0) {
-                sorter.initialization();
-                sorter.separation(fileNameSort, workFile1, workFile2, comparator, readers, writer);
-                sorter.merge(fileNameSort, workFile1, workFile2, comparator, readers, writer);
-                s1 = sorter.s1;
-                s2 = sorter.s2;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-//
-//    public void sort(String fileNameSort, String sortColumn, char separator, char quotechar,
-//                     int number_line, char escapechar, String lineEnd) {
-//        try {
-//            int s1, s2, mark;
-//            s1 = s2 = 1;
-//            List<String> end_range = new ArrayList<>();
-//            end_range.add("'");
-//            Comparator<Row> comparator = new DefaultRowComparator(sortColumn); // comparator for compare rows
-//            List<String> first_row = f.read(); // read name columuns
-//            List<String> lst_read;
-//            Row row1;// objects Row for compare
-//            Row row2 = new Row();
-//            while (s1 > 0 & s2 > 0) { //
-//                mark = 1; //
-//                s1 = 0; //
-//                s2 = 0;
-//                row1 = toRow(first_row, f.read()); // packaging first row values
-//                if (f.hasNextLine()) // file end check
-//                    f1.write(new ArrayList<>(row1.getRowValues())); // write first row in first file
-//                if (f.hasNextLine()) // file end check
-//                    row2 = toRow(first_row, f.read()); // packaging second row values
-//                while (true) { // file division
-//                    if (comparator.compare(row1, row2) > 0) {
-//                        switch (mark) {
-//                            case 1: {
-//                                f1.write(end_range);
-//                                mark = 2;
-//                                s1++;
-//                                break;
-//                            }
-//                            case 2: {
-//                                f2.write(end_range);
-//                                mark = 1;
-//                                s2++;
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    if (mark == 1) {
-//                        f1.write(new ArrayList<>(row2.getRowValues()));
-//                    } else {
-//                        f2.write(new ArrayList<>(row2.getRowValues()));
-//                    }
-//                    row1 = new Row(row2);
-//                    if (!f.hasNextLine()) break;
-//                    row2 = toRow(first_row, f.read());
-//                }
-//                if (s2 > 0 & mark == 2) {
-//                    f2.write(end_range);
-//                }
-//                if (s1 > 0 & mark == 1) {
-//                    f1.write(end_range);
-//                }
-//
-//                //clearing main file
-//                new FileWriter(new File("newfileCopy.csv"), false);
-//
-//                if (f1.hasNextLine()) {
-//                    row1 = toRow(first_row, f1.read());
-//                }
-//                if (f2.hasNextLine()) {
-//                    row2 = toRow(first_row, f2.read());
-//                }
-//
-//                boolean file1, file2, hasN1, hasN2;
-//
-//                while (true) {
-//                    file1 = file2 = false;
-//                    //hasN1 = f1.hasNextLine();
-//                    //hasN2 = f2.hasNextLine();
-//                    while (!file1 && !file2) {
-//                        if (comparator.compare(row1, row2) <= 0) {
-//                            f.write(new ArrayList<>(row1.getRowValues()));
-//                            lst_read = f1.read();
-//                            if (lst_read.equals(end_range)) {
-//                                file1 = true;
-//                                if (f1.hasNextLine()) {
-//                                    row1 = toRow(first_row, f1.read());
-//                                } else {
-//                                    hasN1 = true;
-//                                    break;
-//                                }
-//                            } else {
-//                                row1 = toRow(first_row, lst_read);
-//                            }
-//                        } else {
-//                            f.write(new ArrayList<>(row2.getRowValues()));
-//                            lst_read = f2.read(); //
-//                            row2 = toRow(first_row, lst_read); //
-//                            if (lst_read.equals(end_range)) {
-//                                row2 = toRow(first_row, f2.read());
-//                                file2 = true;
-//                            } else {
-//                                row2 = toRow(first_row, lst_read);
-//                            }
-//                        }
-//                    }
-//                    while (!file1) {
-//                        f.write(new ArrayList<>(row1.getRowValues()));
-//                        lst_read = f1.read();
-//                        if (lst_read.equals(end_range)) {
-//                            row1 = toRow(first_row, f1.read());
-//                            file1 = true;
-//                        } else {
-//                            row1 = toRow(first_row, lst_read);
-//                        }
-//                    }
-//                    while (!file2) {
-//                        f.write(new ArrayList<>(row2.getRowValues()));
-//                        lst_read = f2.read();
-//                        if (lst_read.equals(end_range)) {
-//                            row2 = toRow(first_row, f2.read());
-//                            file2 = true;
-//                        } else {
-//                            row2 = toRow(first_row, lst_read);
-//                        }
-//                    }
-//                }
-//                file1 = file2 = false;
-//                while (!file1 & f1.hasNextLine()) {
-//                    f.write(new ArrayList<>(row1.getRowValues()));
-//                    if ((lst_read = f1.read()).equals(end_range)) //
-//                        file1 = true;
-//                    row1 = toRow(first_row, lst_read); //
-//                }
-//                while (!file2 & f2.hasNextLine()) {
-//                    f.write(new ArrayList<>(row2.getRowValues()));
-//                    if ((lst_read = f1.read()).equals(end_range)) //
-//                        file2 = true;
-//                    row2 = toRow(first_row, lst_read); //
-//                }
-//            }//
-//            (new File(workFileName1)).delete(); //
-//            (new File(workFileName2)).delete(); //
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            }
 }
