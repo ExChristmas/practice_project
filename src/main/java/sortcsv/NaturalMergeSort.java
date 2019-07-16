@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
+import org.apache.log4j.Logger;
 
 
 public class NaturalMergeSort implements SortCSV {
 
     private String workFile1;
     private String workFile2;
+
+    private static final Logger log = Logger.getLogger(NaturalMergeSort.class);
 
     public NaturalMergeSort(String workFile1, String workFile2) {
         this.workFile1 = workFile1;
@@ -32,7 +35,7 @@ public class NaturalMergeSort implements SortCSV {
         this.workFile2 = workFile2;
     }
 
-    private Row toRow(List<String> cols, List<String> vals) { //added
+    private Row toRow(List<String> cols, List<String> vals) {
         if (cols.size() == vals.size()) {
             Map<String, String> row = new LinkedHashMap<>();
             Iterator<String> it_cols = cols.iterator();
@@ -41,19 +44,10 @@ public class NaturalMergeSort implements SortCSV {
                 row.put(it_cols.next(), it_vals.next());
             return new Row(row);
         } else {
-            System.out.println("Column sizes and values differ");
+            log.error("Column sizes and values differ");
+//            System.out.println("Column sizes and values differ");
             return null;
         }
-    }
-
-    private List<String> toList(String[] row) { //added (need?)
-        int len_row = row.length;
-        return new ArrayList<>(Arrays.asList(row).subList(0, len_row));
-    }
-
-    private void equalList(List<String> lst1, List<String> lst2) {
-        lst1.clear();
-        lst1.addAll(lst2);
     }
 
     @Override
@@ -80,7 +74,7 @@ public class NaturalMergeSort implements SortCSV {
         private List<String> first_row;
         private int fileFlag1;
         private int fileFlag2;
-        private int marker;
+        private int marker; // for switch records to files
         private List<String> end_range;
 
         Sorter() {
@@ -270,10 +264,10 @@ public class NaturalMergeSort implements SortCSV {
                 }
             }
              if (!(new File(workFile1)).delete()) {
-                 System.out.println("File don't found or don't can delete"); //
+                 System.out.println("File don't found or don't can delete");
              }
              if (!(new File(workFile2)).delete()) {
-                 System.out.println("File don't found or don't can delete"); //
+                 System.out.println("File don't found or don't can delete");
              }
         }
     }
