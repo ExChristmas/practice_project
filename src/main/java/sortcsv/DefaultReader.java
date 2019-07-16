@@ -29,9 +29,15 @@ public class DefaultReader implements ReaderCSVSort {
     }
 
     @Override
+    public void closeConnection() throws IOException {
+        csvReader.close();
+    }
+
+    @Override
     public void changeFile(String fileName) {
         this.fileName = fileName;
         try {
+            this.csvReader.close();
             this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quoteChar);
         } catch (IOException e) {
             logger.error("IOExeption in change file from reader");

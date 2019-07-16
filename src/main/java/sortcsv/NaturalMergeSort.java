@@ -90,7 +90,7 @@ public class NaturalMergeSort implements SortCSV {
         }
 
         void separation(String fileNameSort, String workFile1, String workFile2, Comparator<Row> comparator,
-                        List<ReaderCSVSort> readers, WriterCSVSort writer) {
+                        List<ReaderCSVSort> readers, WriterCSVSort writer) throws IOException {
             List<String> lst_read;
             Iterator<ReaderCSVSort> it_readers = readers.iterator();
             ReaderCSVSort reader = it_readers.next();
@@ -143,10 +143,12 @@ public class NaturalMergeSort implements SortCSV {
             if (fileFlag2 > 0 && marker == 2) {
                 writer.changeFile(workFile2);
                 writer.write(end_range);
+                writer.closeConnection();
             }
             if (fileFlag1 > 0 && marker == 1) {
                 writer.changeFile(workFile1);
                 writer.write(end_range);
+                writer.closeConnection();
             }
         }
 
@@ -260,9 +262,11 @@ public class NaturalMergeSort implements SortCSV {
                         row2 = toRow(first_row, lst_read2);
                     }
                 } else {
-                    row2 = toRow(first_row, lst_read2); // stoped here!!!
+                    row2 = toRow(first_row, lst_read2);
                 }
             }
+            reader1.closeConnection();
+            reader2.closeConnection();
              if (!(new File(workFile1)).delete()) {
                  logger.error("File" + workFile1 + "don't found or don't can delete");
              }

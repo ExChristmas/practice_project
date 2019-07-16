@@ -1,6 +1,7 @@
 package sortcsv;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -33,9 +34,15 @@ public class DefaultWriter implements WriterCSVSort {
     }
 
     @Override
+    public void closeConnection() throws IOException {
+        csvWriter.close();
+    }
+
+    @Override
     public void changeFile(String fileName) {
         this.fileName = fileName;
         try {
+            this.csvWriter.close();
             this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
                     separator, quoteChar, escapeChar, lineEnd);
         } catch (IOException e) {
