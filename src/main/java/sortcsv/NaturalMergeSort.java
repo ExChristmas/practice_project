@@ -93,6 +93,12 @@ public class NaturalMergeSort implements SortCSV {
             this.marker = 1;
         }
 
+        void checkOnFinalRecord(String fileName, WriterCSVSort writer) throws IOException{
+            writer.changeFile(fileName);
+            writer.write(end_range);
+            writer.closeConnection();
+        }
+
         void separation(String fileNameSort, String workFile1, String workFile2, Comparator<Row> comparator,
                         List<ReaderCSVSort> readers, WriterCSVSort writer) throws IOException {
             List<String> lst_read;
@@ -145,14 +151,10 @@ public class NaturalMergeSort implements SortCSV {
                 }
             }
             if (fileFlag2 > 0 && marker == 2) {
-                writer.changeFile(workFile2);
-                writer.write(end_range);
-                writer.closeConnection();
+                checkOnFinalRecord(workFile2, writer);
             }
             if (fileFlag1 > 0 && marker == 1) {
-                writer.changeFile(workFile1);
-                writer.write(end_range);
-                writer.closeConnection();
+                checkOnFinalRecord(workFile1, writer);
             }
         }
 

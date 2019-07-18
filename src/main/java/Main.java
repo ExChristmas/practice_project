@@ -1,9 +1,12 @@
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import sortcsv.*;
 
 public class Main {
+
+    private static final Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
         List<ReaderCSVSort> readers = new ArrayList<>();
@@ -29,7 +32,7 @@ public class Main {
 //        writer.write(row);
 //        row.clear();
 //        StringBuilder val = new StringBuilder();
-//        for(int i = 0; i < 50000; i++) {
+//        for(int i = 0; i < 2000; i++) {
 //            for(int j = 0; j < 7; j++) {
 //                for(int k = 0; k < 9; k++) {
 //                    val.append(alphabet.charAt(rnd.nextInt(alphabet.length())));
