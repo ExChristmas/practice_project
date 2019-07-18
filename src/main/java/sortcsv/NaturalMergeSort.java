@@ -63,6 +63,7 @@ public class NaturalMergeSort implements SortCSV {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -71,6 +72,7 @@ public class NaturalMergeSort implements SortCSV {
         private Row row1;
         private Row row2;
         private List<String> first_row;
+        private List<String> empty_row;
         private int fileFlag1;
         private int fileFlag2;
         private int marker; // for switch records to files
@@ -81,6 +83,8 @@ public class NaturalMergeSort implements SortCSV {
             row2 = new Row();
             end_range = new ArrayList<>();
             end_range.add("'");
+            empty_row = new ArrayList<>();
+            empty_row.add("");
         }
 
         void initialization() {
@@ -97,16 +101,16 @@ public class NaturalMergeSort implements SortCSV {
             reader.changeFile(fileNameSort);
             first_row = reader.read();
             lst_read = reader.read();
-            if (lst_read != null) { // file end check
+            if ((lst_read != null) && !(lst_read.equals(empty_row))) { // file end check
                 writer.changeFile(workFile1);
                 writer.write(new ArrayList<>(lst_read)); // write first row in first file
                 row1 = toRow(first_row, lst_read);
                 lst_read = reader.read();
             }
-            if (lst_read != null) { // file end check
+            if ((lst_read != null) && !(lst_read.equals(empty_row))) { // file end check
                 row2 = toRow(first_row, lst_read); // packaging second row values
             }
-            while (lst_read != null) { // file division
+            while (lst_read != null && !(lst_read.equals(empty_row))) { // file division
                 if (comparator.compare(row1, row2) > 0) {
                     switch (marker) {
                         case 1: {
@@ -134,7 +138,7 @@ public class NaturalMergeSort implements SortCSV {
                 }
                 row1 = new Row(row2);
                 lst_read = reader.read();
-                if (lst_read != null) {
+                if (lst_read != null && !lst_read.equals(empty_row)) {
                     row2 = toRow(first_row, lst_read);
                 } else {
                     break;
@@ -169,16 +173,17 @@ public class NaturalMergeSort implements SortCSV {
                 lst_read2 = reader2.read();
             }
 
-            if (lst_read1 != null) {
+            if (lst_read1 != null && !lst_read1.equals(empty_row)) {
                 row1 = toRow(first_row, lst_read1);
             }
-            if ((lst_read2 != null) && (fileFlag2 != 0)) {
+            if ((lst_read2 != null && !lst_read2.equals(empty_row)) && (fileFlag2 != 0)) {
                 row2 = toRow(first_row, lst_read2);
             }
 
             boolean file1, file2;
 
-            while (lst_read1 != null && lst_read2 != null) {
+            while (lst_read1 != null && lst_read2 != null &&
+                    !lst_read1.equals(empty_row) && !lst_read2.equals(empty_row)) {
                 file1 = file2 = false;
                 while (!file1 && !file2) {
                     if (comparator.compare(row1, row2) <= 0) {
@@ -188,7 +193,7 @@ public class NaturalMergeSort implements SortCSV {
                         if (lst_read1.equals(end_range)) {
                             file1 = true;
                             lst_read1 = reader1.read();
-                            if (lst_read1 != null) {
+                            if (lst_read1 != null && !lst_read1.equals(empty_row)) {
                                 row1 = toRow(first_row, lst_read1);
                             }
                         } else {
@@ -197,11 +202,11 @@ public class NaturalMergeSort implements SortCSV {
                     } else {
                         assert row2 != null;
                         writer.write(new ArrayList<>(row2.getRowValues()));
-                        lst_read2 = reader2.read(); //
+                        lst_read2 = reader2.read();
                         if (lst_read2.equals(end_range)) {
                             file2 = true;
                             lst_read2 = reader2.read();
-                            if (lst_read2 != null) {
+                            if (lst_read2 != null && !lst_read2.equals(empty_row)) {
                                 row2 = toRow(first_row, lst_read2);
                             }
                         } else {
@@ -216,7 +221,7 @@ public class NaturalMergeSort implements SortCSV {
                     if (lst_read1.equals(end_range)) {
                         file1 = true;
                         lst_read1 = reader1.read();
-                        if (lst_read1 != null)
+                        if (lst_read1 != null && !lst_read1.equals(empty_row))
                             row1 = toRow(first_row, lst_read1);
                     } else {
                         row1 = toRow(first_row, lst_read1);
@@ -229,7 +234,7 @@ public class NaturalMergeSort implements SortCSV {
                     if (lst_read2.equals(end_range)) {
                         file2 = true;
                         lst_read2 = reader2.read();
-                        if (lst_read2 != null)
+                        if (lst_read2 != null && !lst_read2.equals(empty_row))
                             row2 = toRow(first_row, lst_read2);
                     } else {
                         row2 = toRow(first_row, lst_read2);
@@ -237,28 +242,28 @@ public class NaturalMergeSort implements SortCSV {
                 }
             }
             file1 = file2 = false;
-            while (!file1 && lst_read1 != null) {
+            while (!file1 && lst_read1 != null && !lst_read1.equals(empty_row)) {
                 assert row1 != null;
                 writer.write(new ArrayList<>(row1.getRowValues()));
                 lst_read1 = reader1.read();
-                if (lst_read1.equals(end_range)) { //
+                if (lst_read1.equals(end_range)) {
                     file1 = true;
                     lst_read1 = reader1.read();
-                    if (lst_read1 != null) {
+                    if (lst_read1 != null && !lst_read1.equals(empty_row)) {
                         row1 = toRow(first_row, lst_read1);
                     }
                 } else {
                     row1 = toRow(first_row, lst_read1); //
                 }
             }
-            while (!file2 && lst_read2 != null) {
+            while (!file2 && lst_read2 != null && !lst_read2.equals(empty_row)) {
                 assert row2 != null;
                 writer.write(new ArrayList<>(row2.getRowValues()));
                 lst_read2 = reader2.read();
                 if (lst_read2.equals(end_range)) { //
                     file2 = true;
                     lst_read2 = reader2.read();
-                    if (lst_read2 != null) {
+                    if (lst_read2 != null && !lst_read2.equals(empty_row)) {
                         row2 = toRow(first_row, lst_read2);
                     }
                 } else {

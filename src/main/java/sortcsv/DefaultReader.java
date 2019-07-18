@@ -40,8 +40,7 @@ public class DefaultReader implements ReaderCSVSort {
             this.csvReader.close();
             this.csvReader = new CSVReader(new InputStreamReader(new FileInputStream(fileName)), separator, quoteChar);
         } catch (IOException e) {
-            logger.error("IOExeption in change file from reader");
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -56,11 +55,8 @@ public class DefaultReader implements ReaderCSVSort {
             } else {
                 components.addAll(Arrays.asList(components_temp));
             }
-        } catch (IOException e) {
-            logger.error("IOExeption when reading");
-            e.printStackTrace();
         } catch (Exception e) {
-            logger.error("Some error when reading");
+            logger.error(e);
         }
         return components;
     }

@@ -46,8 +46,7 @@ public class DefaultWriter implements WriterCSVSort {
             this.csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(fileName, true)),
                     separator, quoteChar, escapeChar, lineEnd);
         } catch (IOException e) {
-            logger.error("IOException in change file from writer");
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -55,17 +54,16 @@ public class DefaultWriter implements WriterCSVSort {
     public void write(List<String> row) {
         try {
             Iterator<String> it = row.iterator();
-            //
             String[] row_write = new String[row.size()];
             for (int i = 0; i < row.size(); i++)
                 row_write[i] = it.next();
             csvWriter.writeNext(row_write);
             csvWriter.flush();
         } catch (IOException e) {
-            logger.error("IOExeption when writing");
+            logger.error(e);
             e.printStackTrace();
         } catch (Exception e) {
-            logger.error("Some error when writing");
+            logger.error(e);
         }
     }
 }

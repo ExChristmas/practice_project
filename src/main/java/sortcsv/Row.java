@@ -33,14 +33,11 @@ public class Row {
             logger.error("Lengths Columns and Values is not equal");
         } else {
             initializeMap(cols.length);
-            // deal with throwing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
             try {
                 for (int i = 0; i < cols.length; i++)
                     values.put(cols[i], vals[i]);
-            } catch (NullPointerException e) {
-                logger.error("Error, NullPointerException!");
             } catch (Exception e) {
-                logger.error("Some error in constructor from Row");
+                logger.error(e);
             }
         }
     }
